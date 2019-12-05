@@ -21,21 +21,36 @@ export class Pawn extends Piece {
     }
 
     canMove() {
-        var possibleMoves = [];
         var file = this._cell.file;
         var rank = this._cell.rank;
 
-        // can it attack? is there a piece diagonally in front of it to either side?
-        var canAttack = false;
-        
-        possibleMoves = ['d1', 'e1', 'f1'];
+        // can move forward 1 sq
+        var move1sq = "" + this._cell.getFile() + (rank + this._forward);
+        // on first move, can move 2 sqs
+        var move2sq = "" + this._cell.getFile() + (rank + this._forward + this._forward);
 
-        return possibleMoves;
+        // TODO: test if these possibilities are in-bounds and unobstructed
+
+        // can only attack diagonally
+        var diagL = "" + Object.keys(FILES)[file - 1] + (rank + this._forward);
+        var diagR = "" + Object.keys(FILES)[file + 1] + (rank + this._forward);
+
+        // TODO: test if diagonal possibilities are occupied or not
+
+        this._possibleMoves.push(move1sq, move2sq, diagL, diagR);
+
+        return this._possibleMoves;
     }
 
     move(cell) {
-        if(super.move(cell))
+        if(super.move(cell) && (
+            (this.side == SIDES.black && cell.rank != 7) 
+            || (this.side == SIDES.white && cell.rank != 2)
+        ))
+        {
             this.hasMoved = true;
+        }
+            
 
         return;
     }

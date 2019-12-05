@@ -31,6 +31,6 @@ export class Cell {
     }
 
     isOccupied() {
-        return piece != null;
+        return this.piece != null;
     }
 }
