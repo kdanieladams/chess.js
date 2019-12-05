@@ -5,6 +5,8 @@ import { Piece } from './_piece.js';
  * King
  */
 export class King extends Piece {
+    value = 50000;
+
     constructor(side) {
         super(side, PIECETYPE.king);
 

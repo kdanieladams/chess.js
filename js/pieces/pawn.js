@@ -8,6 +8,7 @@ import { Piece } from './_piece.js';
  */
 export class Pawn extends Piece {
     hasMoved = false;
+    value = 100;
 
     constructor(side) {
         super(side, PIECETYPE.pawn);

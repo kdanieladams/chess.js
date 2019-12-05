@@ -1,4 +1,6 @@
 import { FILES, PIECETYPE, SIDES } from './globals.js';
+import { Board } from './board.js';
+import { Team } from './team.js';
 
 /**
  * Match
@@ -26,12 +28,14 @@ export class Match {
     fiftyMove = 0;
 
     constructor(board, whiteTeam, blackTeam) {
-        // TODO: verify type of each param
-        this.board = board;
-        this.whiteTeam = whiteTeam;
-        this.blackTeam = blackTeam;
+        // verify type of each param
+        if(board instanceof Board && whiteTeam instanceof Team && blackTeam instanceof Team) {
+            this.board = board;
+            this.whiteTeam = whiteTeam;
+            this.blackTeam = blackTeam;
 
-        this.init();
+            this.init();
+        }
     }
 
     init() {

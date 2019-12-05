@@ -11,6 +11,7 @@ export class Piece {
     // public
     side = SIDES.white;
     type = PIECETYPE.pawn;
+    value = 100;
 
     // private
     _cell = null;

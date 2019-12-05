@@ -6,6 +6,7 @@ import { Piece } from './_piece.js';
  */
 export class Rook extends Piece {
     hasMoved = false;
+    value = 550;
 
     constructor(side) {
         super(side, PIECETYPE.rook);
