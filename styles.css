@@ -1,0 +1,48 @@
+body {
+    background-color: #121212;
+    color: #919191;
+    font-family: sans-serif;
+}
+
+.boardContainer {
+    display: inline-block;
+    margin: 10px;
+}
+
+.center {
+    text-align: center;
+}
+
+.code {
+    background-color: #333;
+    font-family: Courier;
+}
+
+.file {
+    width: 80px;
+    float: left;
+}
+
+.fileRow{
+    margin-left: 20px;
+}
+
+.rank {
+    height: 80px;
+    line-height: 80px;
+}
+
+.rankCol {
+    float: left;
+}
+
+.rankCol::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+#chess_board {
+    margin: 0 10px;
+    border: solid 1px #555;
+}

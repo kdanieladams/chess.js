@@ -26,3 +26,8 @@ export const FILES = {
     g: 6,
     h: 7
 };
+
+export const LIGHTSQCOLOR = '#999';
+export const DARKSQCOLOR = '#121212';
+export const SQWIDTH = 80;
+export const NUMRANKS = 8;

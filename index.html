@@ -3,27 +3,40 @@
     <head>
         <title>Chess.js</title>
         <link rel="icon" href="data:;base64,=">
-        <style>
-            body {
-                background-color: #121212;
-                color: #919191;
-                font-family: sans-serif;
-            }
-            
-            .code {
-                background-color: #333;
-                font-family: Courier;
-            }
-        </style>
+        <link rel="stylesheet" type="text/css" href="./styles.css" />
     </head>
-
     <body>
-        <h1>Chess.js</h1>
-        
+        <h1 class="center">Chess.js</h1>
         <p>Still very much in preliminary stages here...</p>
         <p>Press F12 to open the inspector, and ESC to see the console.</p>
         <p>Look at the end of the <span class="code">init()</span> function for a good place to break (<em>main.js</em>)</p>
 
+        <div class="center">
+            <div class="boardContainer">
+                <div class="rankCol">
+                    <div class="rank">8</div>
+                    <div class="rank">7</div>
+                    <div class="rank">6</div>
+                    <div class="rank">5</div>
+                    <div class="rank">4</div>
+                    <div class="rank">3</div>
+                    <div class="rank">2</div>
+                    <div class="rank">1</div>
+                </div>
+                <canvas id="chess_board" width="640" height="640"></canvas>
+                <div class="fileRow">
+                    <div class="file">a</div>
+                    <div class="file">b</div>
+                    <div class="file">c</div>
+                    <div class="file">d</div>
+                    <div class="file">e</div>
+                    <div class="file">f</div>
+                    <div class="file">g</div>
+                    <div class="file">h</div>
+                </div>
+            </div>
+        </div>
+        
         <script type="module" src="js/main.js"></script>
     </body>
 </html>

@@ -4,11 +4,13 @@ import { FILES } from './globals.js';
  * Cell
  */
 export class Cell {
+    // public
     file = 0;
     piece = null;
     rank = 0;
+    isLight = false;
 
-    constructor(file, rank) {
+    constructor(file, rank, isLight) {
         if(isNaN(rank) || rank > 8 || rank < 1) {
             console.error("Cell.constructor: Invalid rank value.");
             return;
@@ -20,6 +22,7 @@ export class Cell {
 
         this.file = FILES[file];
         this.rank = parseInt(rank);
+        this.isLight = !!isLight ? true : false;
     }
 
     getFile() {
