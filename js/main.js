@@ -8,8 +8,10 @@ import { Team } from './team.js';
  * 
  * Main thread for the game.
  */
-var match = null;
+var advBtn = document.getElementById('advance_btn');
 var canvas = document.getElementById('chess_board');
+var match = null;
+var step = 0;
 
 function init() {
     match = new Match(new Board(canvas), new Team(SIDES.white), new Team(SIDES.black));
@@ -42,9 +44,21 @@ function testMove2() {
     console.log('testMove2 complete...');
 }
 
+function advanceTest(e) {
+    if(step == 0)
+        testMove();
+    else if(step == 1) {
+        testMove2();
+        advBtn.disabled = true;
+    }
+    else
+        return;
+
+    step++;
+}
+
 /**
  * Start
  */
 init();
-testMove();
-testMove2();
+advBtn.onclick = advanceTest;

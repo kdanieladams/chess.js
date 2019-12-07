@@ -1,4 +1,4 @@
-import { FILES } from './globals.js';
+import { FILES, NUMRANKS } from './globals.js';
 
 /**
  * Cell
@@ -11,7 +11,7 @@ export class Cell {
     isLight = false;
 
     constructor(file, rank, isLight) {
-        if(isNaN(rank) || rank > 8 || rank < 1) {
+        if(isNaN(rank) || rank > NUMRANKS || rank < 1) {
             console.error("Cell.constructor: Invalid rank value.");
             return;
         }
