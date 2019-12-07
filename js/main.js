@@ -5,17 +5,15 @@ import { Team } from './team.js';
 
 /**
  * Chess.js
+ * 
+ * Main thread for the game.
  */
 var match = null;
 var canvas = document.getElementById('chess_board');
-var ctx = canvas.getContext('2d');
 
 function init() {
-    // setup the match
-    match = new Match(new Board(), new Team(SIDES.white), new Team(SIDES.black));
-    
-    // draw the board
-    match.board.draw(ctx, canvas.width);
+    match = new Match(new Board(canvas), new Team(SIDES.white), new Team(SIDES.black));
+    match.board.draw();
     
     console.log('init complete...');
 }
@@ -27,9 +25,21 @@ function testMove() {
 
     pawn.canMove(board); // calc possible moves
     pawn.move(board.getCellByCoord('e4')); // actually move
-    board.draw(ctx, canvas.width);
+    board.draw();
 
     console.log('testMove complete...');
+}
+
+function testMove2() {
+    var team = match.blackTeam;
+    var board = match.board;
+    var pawn = team.pieces[3];
+
+    pawn.canMove(board);
+    pawn.move(board.getCellByCoord('d5'));
+    board.draw();
+
+    console.log('testMove2 complete...');
 }
 
 /**
@@ -37,4 +47,4 @@ function testMove() {
  */
 init();
 testMove();
-
+testMove2();

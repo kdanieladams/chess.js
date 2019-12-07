@@ -1,14 +1,26 @@
-import { FILES, SQWIDTH, LIGHTSQCOLOR, DARKSQCOLOR, NUMRANKS, SIDES } from './globals.js';
+import { FILES, LIGHTSQCOLOR, DARKSQCOLOR, NUMRANKS, SIDES } from './globals.js';
 import { Cell } from './cell.js';
 
 /**
  * Board
  */
 export class Board {
+    canvas = null;
     cells = new Array();
+    ctx = null;
 
-    constructor() {
+    constructor(canvas) {
+        canvas = canvas instanceof HTMLCanvasElement ? canvas : null;
+
         var filesArr = Object.keys(FILES);
+
+        if(canvas == null) {
+            console.error('Board.constructor: invalid canvas element');
+            return;
+        }
+
+        this.canvas = canvas;
+        this.ctx = this.canvas.getContext('2d');
 
         for(var row = 0; row < NUMRANKS; row++) {
             for(var col = 0; col < filesArr.length; col++) {
@@ -38,28 +50,29 @@ export class Board {
         return this._validateCoord(coord);
     }
 
-    draw(ctx, canvasWidth, lightCol, darkCol) {
-        canvasWidth = isNaN(canvasWidth) ? null : parseInt(canvasWidth);
+    draw(lightCol, darkCol) {
         lightCol = typeof(lightCol) == 'string' && !(lightCol.length > 7) ? lightCol : LIGHTSQCOLOR;
         darkCol = typeof(darkCol) == 'string' && !(darkCol.length > 7) ? darkCol : DARKSQCOLOR;
         
-        var cellWidth = canvasWidth == null ? SQWIDTH : canvasWidth / Object.keys(FILES).length;
+        var cellWidth = this.canvas.width / Object.keys(FILES).length;
         
         for(var i = 0; i < this.cells.length; i++) {
             var cell = this.cells[i];
             var xPos = cell.file * cellWidth;
             var yPos = (NUMRANKS * cellWidth) - (cellWidth * (cell.rank - 1)) - cellWidth;
 
-            ctx.beginPath();
-            ctx.fillStyle = cell.isLight ? lightCol : darkCol;
+            this.ctx.beginPath();
+            this.ctx.fillStyle = cell.isLight ? lightCol : darkCol;
+
             if(cell.isOccupied()) { 
                 if(cell.piece.side == SIDES.black)
-                    ctx.fillStyle = cell.isLight ? '#900' : '#300'; 
+                    this.ctx.fillStyle = cell.isLight ? '#900' : '#300'; 
                 else
-                    ctx.fillStyle = cell.isLight ? '#090' : '#030'; 
+                    this.ctx.fillStyle = cell.isLight ? '#090' : '#030'; 
             }
-            ctx.fillRect(xPos, yPos, cellWidth, cellWidth);
-            ctx.closePath();
+
+            this.ctx.fillRect(xPos, yPos, cellWidth, cellWidth);
+            this.ctx.closePath();
 
             // TOOD: draw any pieces occupying this cell...
             // if(cell.isOccupied()) { ... }

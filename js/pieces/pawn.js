@@ -26,6 +26,8 @@ export class Pawn extends Piece {
             var file = this._cell.file;
             var rank = this._cell.rank;
 
+            this._possibleMoves = [];
+
             // can always move forward 1 sq
             var mv1sq = "" + this._cell.getFile() + (rank + this._forward);
             if(board.cellInBounds(mv1sq)) {
