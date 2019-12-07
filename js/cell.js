@@ -9,6 +9,7 @@ export class Cell {
     piece = null;
     rank = 0;
     isLight = false;
+    possibleMove = false;
 
     constructor(file, rank, isLight) {
         if(isNaN(rank) || rank > NUMRANKS || rank < 1) {

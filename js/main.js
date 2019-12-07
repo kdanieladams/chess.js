@@ -8,9 +8,14 @@ import { Team } from './team.js';
  * 
  * Main thread for the game.
  */
-var advBtn = document.getElementById('advance_btn');
+
+// runtime globals
 var canvas = document.getElementById('chess_board');
 var match = null;
+
+// testing devices
+var advBtn = document.getElementById('advance_btn');
+var statusBox = document.getElementById('test_status');
 var step = 0;
 
 function init() {
@@ -20,39 +25,62 @@ function init() {
     console.log('init complete...');
 }
 
-function testMove() {
-    var team = match.whiteTeam;
-    var board = match.board;
-    var pawn = team.pieces[4]; // white pawn on E2
-
-    pawn.canMove(board); // calc possible moves
-    pawn.move(board.getCellByCoord('e4')); // actually move
-    board.draw();
-
-    console.log('testMove complete...');
-}
-
-function testMove2() {
-    var team = match.blackTeam;
-    var board = match.board;
-    var pawn = team.pieces[3];
-
-    pawn.canMove(board);
-    pawn.move(board.getCellByCoord('d5'));
-    board.draw();
-
-    console.log('testMove2 complete...');
+function updateStatus(msg) {
+    statusBox.innerHTML = msg;
 }
 
 function advanceTest(e) {
-    if(step == 0)
-        testMove();
-    else if(step == 1) {
-        testMove2();
-        advBtn.disabled = true;
+    var whitePawn = match.getWhiteTeam().pieces[4];
+    var blackPawn = match.getBlackTeam().pieces[3];
+    var board = match.board;
+
+    if(step == 0){
+        whitePawn.canMove(board);
+        console.log(whitePawn._possibleMoves);
+        board.draw();
+        // clear possible moves from board for next render
+        board.cells.forEach(cell => {
+            cell.possibleMove = false;
+        });
+        updateStatus("White Pawn (E5): get possible moves");
     }
-    else
+    else if(step == 1) {
+        whitePawn.move(board.getCellByCoord('e4'));
+        board.draw();
+        updateStatus("White Pawn (E5): move to E4");
+    }
+    else if(step == 2) {
+        blackPawn.canMove(board);
+        console.log(blackPawn._possibleMoves);
+        board.draw();
+        // clear possible moves from board for next render
+        board.cells.forEach(cell => {
+            cell.possibleMove = false;
+        });
+        updateStatus("Black Pawn (D7): get possible moves");
+    }
+    else if(step == 3) {
+        blackPawn.move(board.getCellByCoord('d5'));
+        board.draw();
+        updateStatus("Black Pawn (D7): move to D5");
+    }
+    else if(step == 4) {
+        whitePawn.canMove(board);
+        console.log(whitePawn._possibleMoves);
+        board.draw();
+        // clear possible moves from board for next render
+        board.cells.forEach(cell => {
+            cell.possibleMove = false;
+        });
+        updateStatus("White Pawn (E4): get possible moves");
+    }
+    else {
+        // do nothing
+        advBtn.disabled = true;
+        board.draw();
+        updateStatus("Test complete.");
         return;
+    }
 
     step++;
 }

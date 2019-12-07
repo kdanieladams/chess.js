@@ -27,6 +27,15 @@ export const FILES = {
     h: 7
 };
 
+/**
+ * Colors
+ */
 export const LIGHTSQCOLOR = '#999';
 export const DARKSQCOLOR = '#121212';
+export const POSSIBLESQCOLOR = "#0a0";
+
+/**
+ * Dimensions
+ */
 export const NUMRANKS = 8;
+// export const NUMFILES = Object.keys(FILES).length;

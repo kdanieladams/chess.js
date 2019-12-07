@@ -31,7 +31,7 @@ export class Pawn extends Piece {
             // can always move forward 1 sq
             var mv1sq = "" + this._cell.getFile() + (rank + this._forward);
             if(board.cellInBounds(mv1sq)) {
-                var cell = board.getCellByCoord(mv1sq);
+                let cell = board.getCellByCoord(mv1sq);
                 if(!cell.isOccupied()) {
                     this._possibleMoves.push(mv1sq);
                 }
@@ -40,7 +40,7 @@ export class Pawn extends Piece {
             // on first move, can move 2 sqs
             var mv2sq = "" + this._cell.getFile() + (rank + this._forward + this._forward);
             if(!this.hasMoved && board.cellInBounds(mv2sq)) {
-                var cell = board.getCellByCoord(mv2sq);
+                let cell = board.getCellByCoord(mv2sq);
                 if(!cell.isOccupied()) {
                     this._possibleMoves.push(mv2sq);
                 }
@@ -50,7 +50,7 @@ export class Pawn extends Piece {
             var oppSide = this.side == SIDES.white ? SIDES.black : SIDES.white;
             var diagL = "" + Object.keys(FILES)[file - 1] + (rank + this._forward);
             if(board.cellInBounds(diagL)) {
-                var cell = board.getCellByCoord(diagL);
+                let cell = board.getCellByCoord(diagL);
                 if(cell.isOccupied() && cell.piece.side == oppSide) {
                     this._possibleMoves.push(diagL);
                 }
@@ -58,10 +58,16 @@ export class Pawn extends Piece {
 
             var diagR = "" + Object.keys(FILES)[file + 1] + (rank + this._forward);
             if(board.cellInBounds(diagR)) {
-                var cell = board.getCellByCoord(diagR);
+                let cell = board.getCellByCoord(diagR);
                 if(cell.isOccupied() && cell.piece.side == oppSide) {
                     this._possibleMoves.push(diagR);
                 }
+            }
+
+            // highlight possible moves on the board
+            for(var i = 0; i < this._possibleMoves.length; i++) {
+                let cell = board.getCellByCoord(this._possibleMoves[i]);
+                cell.possibleMove = true;
             }
 
             return this._possibleMoves;

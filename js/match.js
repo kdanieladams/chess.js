@@ -12,8 +12,8 @@ import { Team } from './team.js';
 export class Match {
     // placeholders for object instances
     board = null;
-    whiteTeam = null;
-    blackTeam = null;
+    team1 = null;
+    team2 = null;
 
     // full turns for both white & black
     turns = 0;      
@@ -27,21 +27,25 @@ export class Match {
     // draw if in 50 turns, no pawn has moved and no piece has been captured
     fiftyMove = 0;
 
-    constructor(board, whiteTeam, blackTeam) {
+    constructor(board, team1, team2) {
         // verify type of each param
-        if(board instanceof Board && whiteTeam instanceof Team && blackTeam instanceof Team) {
+        if(board instanceof Board 
+            && team1 instanceof Team 
+            && team2 instanceof Team
+            && team1.side != team2.side) 
+        {
             this.board = board;
-            this.whiteTeam = whiteTeam;
-            this.blackTeam = blackTeam;
+            this.team1 = team1;
+            this.team2 = team2;
 
             this.init();
         }
     }
 
     init() {
-        if(this.whiteTeam != null && this.blackTeam != null && this.board != null) {
-            this.setupPieces(this.whiteTeam);
-            this.setupPieces(this.blackTeam);
+        if(this.team1 != null && this.team2 != null && this.board != null) {
+            this.setupPieces(this.team1);
+            this.setupPieces(this.team2);
             return;
         }
 
@@ -81,5 +85,13 @@ export class Match {
 
     whosTurn() {
         return this.halfTurns % 2 ? SIDES.black : SIDES.white;
+    }
+
+    getWhiteTeam() {
+        return this.team1.side == SIDES.white ? this.team1 : this.team2;
+    }
+
+    getBlackTeam() {
+        return this.team1.side == SIDES.black ? this.team1 : this.team2;
     }
 }

@@ -18,22 +18,24 @@ export class Rook extends Piece {
     }
 
     canMove() {
-        // ...
+        // can slide up & down until end of board
+        // can slide left & right until end of board
+        // cannot jump other pieces on team
+        // encountering an opponent piece will halt forward movement
         return [];
     }
 
     move(cell) {
-        if(super.move(cell))
-            this.hasMoved = true;
+        var startFile = this._cell ? this._cell.file : null;
 
-        return;
-    }
-
-    moveEffects() {
-        if(this._cell != null && !this.hasMoved) {
-            // team can no longer castle on this side...
-            var file = this._cell.file;
-            
+        if(super.move(cell)) {
+            if((cell.file != FILES.a && cell.file != FILES.h)
+                || (this.side == SIDES.black && cell.rank != 8)
+                || (this.side == SIDES.white && cell.rank != 1)) 
+            {
+                // TODO: team can no longer castle on this side...
+                this.hasMoved = true;
+            }
         }
 
         return;

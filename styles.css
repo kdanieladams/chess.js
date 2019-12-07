@@ -1,9 +1,15 @@
+/**
+ * HTML Elements
+ */
 body {
     background-color: #121212;
     color: #919191;
     font-family: sans-serif;
 }
 
+/**
+ * Classes
+ */
 .boardContainer {
     display: inline-block;
     margin: 10px;
@@ -42,7 +48,17 @@ body {
     display: table;
 }
 
+/**
+ * IDs
+ */
 #chess_board {
     margin: 0 10px;
     border: solid 1px #555;
+}
+
+#test_status {
+    display: block;
+    text-align: center;
+    font-size: 16px;
+    margin-bottom: 15px;
 }

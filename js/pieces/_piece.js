@@ -53,20 +53,16 @@ export class Piece {
         if(cell instanceof Cell && this._possibleMoves.includes(cell.getCoord())) {
             if(this._cell != null) 
                 this._cell.piece = null;
-            
+
+            // TODO: handle captures
+                        
             this._cell = cell;
             this._cell.piece = this;
             this._possibleMoves = [];
-            this.moveEffects();
 
             return true;
         }
 
         return false;
-    }
-
-    moveEffects() {
-        // console.error("Piece.moveEffects: moveEffects has not been implemented!");
-        return;
     }
 }

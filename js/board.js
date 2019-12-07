@@ -1,4 +1,4 @@
-import { FILES, LIGHTSQCOLOR, DARKSQCOLOR, NUMRANKS, SIDES } from './globals.js';
+import { FILES, LIGHTSQCOLOR, DARKSQCOLOR, NUMRANKS, SIDES, POSSIBLESQCOLOR } from './globals.js';
 import { Cell } from './cell.js';
 
 /**
@@ -56,26 +56,47 @@ export class Board {
         
         var cellWidth = this.canvas.width / Object.keys(FILES).length;
         
-        for(var i = 0; i < this.cells.length; i++) {
-            var cell = this.cells[i];
-            var xPos = cell.file * cellWidth;
-            var yPos = (NUMRANKS * cellWidth) - (cellWidth * (cell.rank - 1)) - cellWidth;
+        for(let i = 0; i < this.cells.length; i++) {
+            let cell = this.cells[i];
+            let xPos = cell.file * cellWidth;
+            let yPos = (NUMRANKS * cellWidth) - (cellWidth * (cell.rank - 1)) - cellWidth;
 
             this.ctx.beginPath();
             this.ctx.fillStyle = cell.isLight ? lightCol : darkCol;
 
+            // TEMPORARY
             if(cell.isOccupied()) { 
                 if(cell.piece.side == SIDES.black)
                     this.ctx.fillStyle = cell.isLight ? '#900' : '#300'; 
                 else
-                    this.ctx.fillStyle = cell.isLight ? '#090' : '#030'; 
+                    this.ctx.fillStyle = cell.isLight ? '#3269a8' : '#123075'; 
             }
+            // ./TEMPORARY
 
             this.ctx.fillRect(xPos, yPos, cellWidth, cellWidth);
             this.ctx.closePath();
 
             // TOOD: draw any pieces occupying this cell...
-            // if(cell.isOccupied()) { ... }
+            if(cell.isOccupied()) {
+                cell.piece.draw(this.ctx, xPos, yPos);
+            }
+        }
+
+        // highlight possible moves
+        // must occur AFTER board is fully rendered to appear 'ontop' of the squares
+        for(let i = 0; i < this.cells.length; i++) {
+            let cell = this.cells[i];
+            
+            if(cell.possibleMove) {
+                let xPos = cell.file * cellWidth;
+                let yPos = (NUMRANKS * cellWidth) - (cellWidth * (cell.rank - 1)) - cellWidth;
+                this.ctx.beginPath();
+                this.ctx.lineWidth = "6";
+                this.ctx.strokeStyle = POSSIBLESQCOLOR;
+                this.ctx.rect(xPos, yPos, cellWidth, cellWidth);
+                this.ctx.stroke();
+                this.ctx.closePath();
+            }
         }
     }
 
