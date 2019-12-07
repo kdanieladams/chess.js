@@ -31,11 +31,12 @@ export const FILES = {
  * Colors
  */
 export const LIGHTSQCOLOR = '#999';
-export const DARKSQCOLOR = '#121212';
+export const DARKSQCOLOR = '#333';
 export const POSSIBLESQCOLOR = "#0a0";
 
 /**
- * Dimensions
+ * Miscellaenous
  */
 export const NUMRANKS = 8;
 // export const NUMFILES = Object.keys(FILES).length;
+export const PIECESPRITEWIDTH = 214;

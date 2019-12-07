@@ -56,6 +56,10 @@ body {
     border: solid 1px #555;
 }
 
+#pieces_img {
+    display: none;
+}
+
 #test_status {
     display: block;
     text-align: center;

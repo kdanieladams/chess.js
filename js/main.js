@@ -12,6 +12,7 @@ import { Team } from './team.js';
 // runtime globals
 var canvas = document.getElementById('chess_board');
 var match = null;
+var pieces_img = document.getElementById('pieces_img');
 
 // testing devices
 var advBtn = document.getElementById('advance_btn');
@@ -19,7 +20,7 @@ var statusBox = document.getElementById('test_status');
 var step = 0;
 
 function init() {
-    match = new Match(new Board(canvas), new Team(SIDES.white), new Team(SIDES.black));
+    match = new Match(new Board(canvas, pieces_img), new Team(SIDES.white), new Team(SIDES.black));
     match.board.draw();
     
     console.log('init complete...');
@@ -88,5 +89,7 @@ function advanceTest(e) {
 /**
  * Start
  */
-init();
-advBtn.onclick = advanceTest;
+window.onload = function() {
+    init();
+    advBtn.onclick = advanceTest;
+};

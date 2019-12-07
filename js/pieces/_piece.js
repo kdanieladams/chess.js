@@ -1,4 +1,4 @@
-import { SIDES, PIECETYPE } from '../globals.js';
+import { SIDES, PIECETYPE, PIECESPRITEWIDTH } from '../globals.js';
 import { Cell } from '../cell.js';
 
 /**
@@ -31,6 +31,16 @@ export class Piece {
 
     canMove() {
         console.error("Piece.canMove: canMove has not been implemented!");
+    }
+
+    draw(img, ctx, xPos, yPos, cellWidth) {
+        var clipX = (img.naturalWidth - PIECESPRITEWIDTH) - (this.type * PIECESPRITEWIDTH) + PIECESPRITEWIDTH,
+            clipY = this.side == SIDES.white ? 0 : PIECESPRITEWIDTH,
+            clipWidth = PIECESPRITEWIDTH,
+            clipHeight = PIECESPRITEWIDTH;
+
+        ctx.drawImage(img, clipX, clipY, clipWidth, clipHeight, 
+            xPos, yPos, cellWidth, cellWidth);
     }
 
     getCoord() {

@@ -8,19 +8,26 @@ export class Board {
     canvas = null;
     cells = new Array();
     ctx = null;
+    pieces_img = null;
 
-    constructor(canvas) {
+    constructor(canvas, pieces_img) {
         canvas = canvas instanceof HTMLCanvasElement ? canvas : null;
-
-        var filesArr = Object.keys(FILES);
+        pieces_img = pieces_img instanceof HTMLImageElement ? pieces_img : null;
 
         if(canvas == null) {
             console.error('Board.constructor: invalid canvas element');
             return;
         }
+        if(pieces_img == null) {
+            console.error('Board.constructor: invalid pieces_img element');
+            return;
+        }
+
+        var filesArr = Object.keys(FILES);
 
         this.canvas = canvas;
         this.ctx = this.canvas.getContext('2d');
+        this.pieces_img = pieces_img;
 
         for(var row = 0; row < NUMRANKS; row++) {
             for(var col = 0; col < filesArr.length; col++) {
@@ -64,21 +71,21 @@ export class Board {
             this.ctx.beginPath();
             this.ctx.fillStyle = cell.isLight ? lightCol : darkCol;
 
-            // TEMPORARY
+            /*
             if(cell.isOccupied()) { 
                 if(cell.piece.side == SIDES.black)
                     this.ctx.fillStyle = cell.isLight ? '#900' : '#300'; 
                 else
                     this.ctx.fillStyle = cell.isLight ? '#3269a8' : '#123075'; 
             }
-            // ./TEMPORARY
+            */
 
             this.ctx.fillRect(xPos, yPos, cellWidth, cellWidth);
             this.ctx.closePath();
 
-            // TOOD: draw any pieces occupying this cell...
+            // draw any pieces occupying this cell...
             if(cell.isOccupied()) {
-                cell.piece.draw(this.ctx, xPos, yPos);
+                cell.piece.draw(this.pieces_img, this.ctx, xPos, yPos, cellWidth);
             }
         }
 
