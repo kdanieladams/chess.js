@@ -1,4 +1,5 @@
 import { SIDES, PIECETYPE, FILES } from '../globals.js';
+import { Board } from '../board.js';
 import { Piece } from './_piece.js';
 
 /**
@@ -20,37 +21,62 @@ export class Pawn extends Piece {
         ];
     }
 
-    canMove() {
-        var file = this._cell.file;
-        var rank = this._cell.rank;
+    canMove(board) {
+        if(board instanceof Board) {
+            var file = this._cell.file;
+            var rank = this._cell.rank;
 
-        // can move forward 1 sq
-        var move1sq = "" + this._cell.getFile() + (rank + this._forward);
-        // on first move, can move 2 sqs
-        var move2sq = "" + this._cell.getFile() + (rank + this._forward + this._forward);
+            // can always move forward 1 sq
+            var mv1sq = "" + this._cell.getFile() + (rank + this._forward);
+            if(board.cellInBounds(mv1sq)) {
+                var cell = board.getCellByCoord(mv1sq);
+                if(!cell.isOccupied()) {
+                    this._possibleMoves.push(mv1sq);
+                }
+            }
 
-        // TODO: test if these possibilities are in-bounds and unobstructed
+            // on first move, can move 2 sqs
+            var mv2sq = "" + this._cell.getFile() + (rank + this._forward + this._forward);
+            if(!this.hasMoved && board.cellInBounds(mv2sq)) {
+                var cell = board.getCellByCoord(mv2sq);
+                if(!cell.isOccupied()) {
+                    this._possibleMoves.push(mv2sq);
+                }
+            }
 
-        // can only attack diagonally
-        var diagL = "" + Object.keys(FILES)[file - 1] + (rank + this._forward);
-        var diagR = "" + Object.keys(FILES)[file + 1] + (rank + this._forward);
+            // can only attack diagonally
+            var oppSide = this.side == SIDES.white ? SIDES.black : SIDES.white;
+            var diagL = "" + Object.keys(FILES)[file - 1] + (rank + this._forward);
+            if(board.cellInBounds(diagL)) {
+                var cell = board.getCellByCoord(diagL);
+                if(cell.isOccupied() && cell.piece.side == oppSide) {
+                    this._possibleMoves.push(diagL);
+                }
+            }
 
-        // TODO: test if diagonal possibilities are occupied or not
+            var diagR = "" + Object.keys(FILES)[file + 1] + (rank + this._forward);
+            if(board.cellInBounds(diagR)) {
+                var cell = board.getCellByCoord(diagR);
+                if(cell.isOccupied() && cell.piece.side == oppSide) {
+                    this._possibleMoves.push(diagR);
+                }
+            }
 
-        this._possibleMoves.push(move1sq, move2sq, diagL, diagR);
-
-        return this._possibleMoves;
+            return this._possibleMoves;
+        }
+     
+        console.error("Pawn.canMove: Invalid board");
+        return false;
     }
 
     move(cell) {
-        if(super.move(cell) && (
-            (this.side == SIDES.black && cell.rank != 7) 
-            || (this.side == SIDES.white && cell.rank != 2)
-        ))
-        {
-            this.hasMoved = true;
+        if(super.move(cell)) {
+            if((this.side == SIDES.black && cell.rank != 7) 
+                || (this.side == SIDES.white && cell.rank != 2)) 
+            {
+                this.hasMoved = true;
+            }
         }
-            
 
         return;
     }

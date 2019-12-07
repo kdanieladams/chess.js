@@ -17,8 +17,28 @@ export class Board {
         }
     }
 
-    getCellByCoord(coord) {
+    _validateCoord(coord) {
+        // a valid coordinate is presented as file + rank in a 
+        // two character string; e.g. "d4"
         if(!isNaN(coord) || coord.length != 2) {
+            return false;
+        }
+        else if(!Object.keys(FILES).includes(coord[0])) {
+            return false;
+        }
+        else if(isNaN(coord[1]) || coord[1] > 8 || coord[1] < 1) {
+            return false;
+        }
+
+        return true;
+    }
+
+    cellInBounds(coord) {
+        return this._validateCoord(coord);
+    }
+
+    getCellByCoord(coord) {
+        if(!this._validateCoord(coord)) {
             console.error('Board.getCellByCoord: invalid coord value.');
             return;
         }

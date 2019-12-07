@@ -17,7 +17,7 @@ export class Bishop extends Piece {
     }
 
     canMove() {
-        // ...
+        // can slide diagonally
         return [];
     }
 }

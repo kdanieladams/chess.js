@@ -24,7 +24,7 @@ export class Piece {
         this.side = side;
         this.type = type;
         
-        this._forward = this.side == SIDES.white ? 1 : -1; // -1 = up, 1 = down
+        this._forward = this.side == SIDES.white ? 1 : -1; // -1 = down, 1 = up
         this._slideDiag = (this.type == PIECETYPE.bishop || this.type == PIECETYPE.queen);
         this._slideVertHoriz = (this.type == PIECETYPE.rook || this.type == PIECETYPE.queen);
     }
