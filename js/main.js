@@ -34,6 +34,7 @@ function advanceTest(e) {
     var whitePawn = match.getWhiteTeam().pieces[4];
     var whiteKnight = match.getWhiteTeam().pieces[10];
     var blackPawn = match.getBlackTeam().pieces[3];
+    var blackBishop = match.getBlackTeam().pieces[12];
     var board = match.board;
 
     if(step == 0){
@@ -67,19 +68,36 @@ function advanceTest(e) {
     else if(step == 5) {
         whiteKnight.canMove(board);
         board.draw();
-        updateStatus("White Knight (B1): get possible moves");
         board.clearPossible();
+        updateStatus("White Knight (B1): get possible moves");
     }
     else if(step == 6) {
         whiteKnight.move(board.getCellByCoord('c3'));
         board.draw();
         updateStatus("White Knight (B1): move to C3");
     }
-    else if(step == 7) {
+    else if (step == 7) {
+        blackBishop.canMove(board);
+        board.draw();
+        board.clearPossible();
+        updateStatus("Black Bishop (C8): get possible moves");
+    }
+    else if (step == 8) {
+        blackBishop.move(board.getCellByCoord("f5"));
+        board.draw();
+        updateStatus("Black Bishop (C8): move to F5");
+    }
+    else if(step == 9) {
+        blackBishop.canMove(board);
+        board.draw();
+        board.clearPossible();
+        updateStatus("Black Bishop (F5): get possible moves");
+    }
+    else if(step == 10) {
         whiteKnight.canMove(board);
         board.draw();
-        updateStatus("White Knight (C3): get possible moves");
         board.clearPossible();
+        updateStatus("White Knight (C3): get possible moves");
     }
     else {
         // do nothing

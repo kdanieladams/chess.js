@@ -30,9 +30,9 @@ export const FILES = {
 /**
  * Colors
  */
-export const LIGHTSQCOLOR = '#999';
+export const LIGHTSQCOLOR = '#919191';
 export const DARKSQCOLOR = '#333';
-export const POSSIBLESQCOLOR = "#0a0";
+export const POSSIBLESQCOLOR = '#40ff00';
 
 /**
  * Miscellaenous

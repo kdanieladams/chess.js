@@ -1,4 +1,5 @@
-import { SIDES, PIECETYPE, PIECESPRITEWIDTH } from '../globals.js';
+import { FILES, PIECESPRITEWIDTH, PIECETYPE, SIDES } from '../globals.js';
+import { Board } from '../board.js';
 import { Cell } from '../cell.js';
 
 /**
@@ -49,6 +50,47 @@ export class Piece {
             return this._cell.getCoord();
 
         return "";
+    }
+
+    getDiagMoves(board, forward, right) {
+        if(board instanceof Board) {
+            forward = !!forward;
+            right = !!right;
+    
+            var coord = this.getCoord();
+            var moves = new Array();
+            var incFile = right ? 1 : -1;
+            var incRank = (forward ? 1 : -1) * this._forward;
+    
+            while(board.cellInBounds(coord)) {
+                let file = FILES[coord[0]];
+                let rank = parseInt(coord[1]);
+
+                if(coord != this.getCoord())  {
+                    let cell = board.getCellByCoord(coord);
+                    
+                    // check if cell is occupied
+                    if(cell.isOccupied()) {
+                        if(cell.piece.getSide() != this.getSide()) {
+                            moves.push(coord);
+                            cell.possibleMove = true;
+                        }
+                        
+                        break;
+                    }
+
+                    moves.push(coord);
+                    cell.possibleMove = true;
+                }
+
+                coord = "" + Object.keys(FILES)[file + incFile] + (rank + incRank);
+            }
+    
+            return moves;
+        }
+        
+        console.error("Piece.getDiagMoves: Invalid board");
+        return false;
     }
 
     getPieceType() {

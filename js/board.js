@@ -81,6 +81,7 @@ export class Board {
             this.ctx.beginPath();
             this.ctx.fillStyle = cell.isLight ? lightCol : darkCol;
 
+            // highlight the active piece
             if(cell.isOccupied() && cell.piece.active) { 
                 this.ctx.fillStyle = POSSIBLESQCOLOR;
             }
@@ -88,26 +89,25 @@ export class Board {
             this.ctx.fillRect(xPos, yPos, cellWidth, cellWidth);
             this.ctx.closePath();
 
-            // draw any pieces occupying this cell...
-            if(cell.isOccupied()) {
-                cell.piece.draw(this.pieces_img, this.ctx, xPos, yPos, cellWidth);
-            }
-        }
-
-        // highlight possible moves
-        // must occur AFTER board is fully rendered to appear 'ontop' of the squares
-        for(let i = 0; i < this.cells.length; i++) {
-            let cell = this.cells[i];
-            
+            // highlight possible moves
             if(cell.possibleMove) {
-                let xPos = cell.file * cellWidth;
-                let yPos = (NUMRANKS * cellWidth) - (cellWidth * (cell.rank - 1)) - cellWidth;
+                // offset by half lineWidth so highlight fits within square
+                let lineWidth = 6,
+                    pxPos = xPos + (lineWidth * 0.5),
+                    pyPos = yPos + (lineWidth * 0.5),
+                    pCellWidth = cellWidth - lineWidth;
+
                 this.ctx.beginPath();
-                this.ctx.lineWidth = "6";
+                this.ctx.lineWidth = lineWidth;
                 this.ctx.strokeStyle = POSSIBLESQCOLOR;
-                this.ctx.rect(xPos, yPos, cellWidth, cellWidth);
+                this.ctx.rect(pxPos, pyPos, pCellWidth, pCellWidth);
                 this.ctx.stroke();
                 this.ctx.closePath();
+            }
+
+            // draw any pieces occupying this cell
+            if(cell.isOccupied()) {
+                cell.piece.draw(this.pieces_img, this.ctx, xPos, yPos, cellWidth);
             }
         }
     }

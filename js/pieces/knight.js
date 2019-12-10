@@ -26,22 +26,22 @@ export class Knight extends Piece {
             this.active = true;
             this._possibleMoves = [];
 
-            // 2 up 1 left
+            // 2 forward 1 left
             testMoves.push("" + Object.keys(FILES)[file - 1] + (rank + this._forward + this._forward));
-            // 2 up 1 right
+            // 2 forward 1 right
             testMoves.push("" + Object.keys(FILES)[file + 1] + (rank + this._forward + this._forward));
-            // 2 left 1 up 
+            // 2 left 1 forward 
             testMoves.push("" + Object.keys(FILES)[file - 2] + (rank + this._forward));
-            // 2 right 1 up
+            // 2 right 1 forward
             testMoves.push("" + Object.keys(FILES)[file + 2] + (rank + this._forward));
 
-            // 2 down 1 left
+            // 2 backward 1 left
             testMoves.push("" + Object.keys(FILES)[file - 1] + (rank - this._forward - this._forward));
-            // 2 down 1 right
+            // 2 backward 1 right
             testMoves.push("" + Object.keys(FILES)[file + 1] + (rank - this._forward - this._forward));
-            // 2 left 1 down
+            // 2 left 1 backward
             testMoves.push("" + Object.keys(FILES)[file - 2] + (rank - this._forward));
-            // 2 right 1 down
+            // 2 right 1 backward
             testMoves.push("" + Object.keys(FILES)[file + 2] + (rank - this._forward));
 
             for(var i = 0; i < testMoves.length; i++) {

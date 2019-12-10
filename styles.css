@@ -39,7 +39,7 @@ body {
  */
 #chess_board {
     margin: 10px;
-    border: solid 1px #555;
+    border: solid 1px #999;
 }
 
 #pieces_img {

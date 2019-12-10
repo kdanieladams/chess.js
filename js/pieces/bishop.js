@@ -1,5 +1,6 @@
-import { SIDES, PIECETYPE, FILES } from '../globals.js';
+import { PIECETYPE } from '../globals.js';
 import { Piece } from './_piece.js';
+import { Board } from '../board.js';
 
 /**
  * Bishop
@@ -16,8 +17,21 @@ export class Bishop extends Piece {
         ];
     }
 
-    canMove() {
-        // can slide diagonally
-        return [];
+    canMove(board) {
+        if(board instanceof Board) {
+            this.active = true;
+            this._possibleMoves = [];
+
+            // can slide diagonally            
+            this._possibleMoves = this._possibleMoves.concat(this.getDiagMoves(board, true, false));  // forward and left
+            this._possibleMoves = this._possibleMoves.concat(this.getDiagMoves(board, true, true));   // forward and right
+            this._possibleMoves = this._possibleMoves.concat(this.getDiagMoves(board, false, false)); // backward and left
+            this._possibleMoves = this._possibleMoves.concat(this.getDiagMoves(board, false, true));  // backward and right
+
+            return this._possibleMoves;
+        }
+        
+        console.error("Bishop.canMove: Invalid board");
+        return false;
     }
 }
