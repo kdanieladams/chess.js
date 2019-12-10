@@ -39,4 +39,4 @@ export const POSSIBLESQCOLOR = "#0a0";
  */
 export const NUMRANKS = 8;
 // export const NUMFILES = Object.keys(FILES).length;
-export const PIECESPRITEWIDTH = 214;
+export const PIECESPRITEWIDTH = 100;

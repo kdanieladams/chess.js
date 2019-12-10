@@ -57,9 +57,19 @@ export class Board {
         return this._validateCoord(coord);
     }
 
+    clearPossible() {
+        for(var i = 0; i < this.cells.length; i++) {
+            let cell = this.cells[i];
+            cell.possibleMove = false;
+            if(cell.isOccupied()) {
+                cell.piece.active = false;
+            }
+        }
+    }
+
     draw(lightCol, darkCol) {
-        lightCol = typeof(lightCol) == 'string' && !(lightCol.length > 7) ? lightCol : LIGHTSQCOLOR;
-        darkCol = typeof(darkCol) == 'string' && !(darkCol.length > 7) ? darkCol : DARKSQCOLOR;
+        lightCol = typeof(lightCol) == 'string' && lightCol.length <= 7 ? lightCol : LIGHTSQCOLOR;
+        darkCol = typeof(darkCol) == 'string' && darkCol.length <= 7 ? darkCol : DARKSQCOLOR;
         
         var cellWidth = this.canvas.width / Object.keys(FILES).length;
         
@@ -71,14 +81,9 @@ export class Board {
             this.ctx.beginPath();
             this.ctx.fillStyle = cell.isLight ? lightCol : darkCol;
 
-            /*
-            if(cell.isOccupied()) { 
-                if(cell.piece.side == SIDES.black)
-                    this.ctx.fillStyle = cell.isLight ? '#900' : '#300'; 
-                else
-                    this.ctx.fillStyle = cell.isLight ? '#3269a8' : '#123075'; 
+            if(cell.isOccupied() && cell.piece.active) { 
+                this.ctx.fillStyle = POSSIBLESQCOLOR;
             }
-            */
 
             this.ctx.fillRect(xPos, yPos, cellWidth, cellWidth);
             this.ctx.closePath();

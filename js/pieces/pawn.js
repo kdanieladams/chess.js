@@ -26,6 +26,7 @@ export class Pawn extends Piece {
             var file = this._cell.file;
             var rank = this._cell.rank;
 
+            this.active = true;
             this._possibleMoves = [];
 
             // can always move forward 1 sq

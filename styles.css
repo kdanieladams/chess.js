@@ -29,30 +29,16 @@ body {
     float: left;
 }
 
-.fileRow{
-    margin-left: 20px;
-}
-
 .rank {
     height: 80px;
     line-height: 80px;
-}
-
-.rankCol {
-    float: left;
-}
-
-.rankCol::after {
-    content: "";
-    clear: both;
-    display: table;
 }
 
 /**
  * IDs
  */
 #chess_board {
-    margin: 0 10px;
+    margin: 10px;
     border: solid 1px #555;
 }
 
@@ -60,9 +46,23 @@ body {
     display: none;
 }
 
+#rank_col {
+    float: left;
+    margin-top: 10px;
+}
+
+#rank_col::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+#file_row {
+    margin-left: 20px;
+}
+
 #test_status {
     display: block;
     text-align: center;
     font-size: 16px;
-    margin-bottom: 15px;
 }

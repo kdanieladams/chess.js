@@ -32,32 +32,25 @@ function updateStatus(msg) {
 
 function advanceTest(e) {
     var whitePawn = match.getWhiteTeam().pieces[4];
+    var whiteKnight = match.getWhiteTeam().pieces[10];
     var blackPawn = match.getBlackTeam().pieces[3];
     var board = match.board;
 
     if(step == 0){
         whitePawn.canMove(board);
-        console.log(whitePawn._possibleMoves);
         board.draw();
-        // clear possible moves from board for next render
-        board.cells.forEach(cell => {
-            cell.possibleMove = false;
-        });
-        updateStatus("White Pawn (E5): get possible moves");
+        board.clearPossible();
+        updateStatus("White Pawn (E2): get possible moves");
     }
     else if(step == 1) {
         whitePawn.move(board.getCellByCoord('e4'));
         board.draw();
-        updateStatus("White Pawn (E5): move to E4");
+        updateStatus("White Pawn (E2): move to E4");
     }
     else if(step == 2) {
         blackPawn.canMove(board);
-        console.log(blackPawn._possibleMoves);
         board.draw();
-        // clear possible moves from board for next render
-        board.cells.forEach(cell => {
-            cell.possibleMove = false;
-        });
+        board.clearPossible();
         updateStatus("Black Pawn (D7): get possible moves");
     }
     else if(step == 3) {
@@ -67,13 +60,26 @@ function advanceTest(e) {
     }
     else if(step == 4) {
         whitePawn.canMove(board);
-        console.log(whitePawn._possibleMoves);
         board.draw();
-        // clear possible moves from board for next render
-        board.cells.forEach(cell => {
-            cell.possibleMove = false;
-        });
+        board.clearPossible();
         updateStatus("White Pawn (E4): get possible moves");
+    }
+    else if(step == 5) {
+        whiteKnight.canMove(board);
+        board.draw();
+        updateStatus("White Knight (B1): get possible moves");
+        board.clearPossible();
+    }
+    else if(step == 6) {
+        whiteKnight.move(board.getCellByCoord('c3'));
+        board.draw();
+        updateStatus("White Knight (B1): move to C3");
+    }
+    else if(step == 7) {
+        whiteKnight.canMove(board);
+        board.draw();
+        updateStatus("White Knight (C3): get possible moves");
+        board.clearPossible();
     }
     else {
         // do nothing
