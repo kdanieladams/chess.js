@@ -77,7 +77,7 @@ export class Board {
             let cell = this.cells[i];
             let xPos = cell.file * cellWidth;
             let yPos = (NUMRANKS * cellWidth) - (cellWidth * (cell.rank - 1)) - cellWidth;
-
+            
             this.ctx.beginPath();
             this.ctx.fillStyle = cell.isLight ? lightCol : darkCol;
 
@@ -123,5 +123,13 @@ export class Board {
         var index = ((rank * Object.keys(FILES).length) - NUMRANKS) + FILES[file];
 
         return this.cells[index];
+    }
+
+    getCellByPixels(xPos, yPos) {
+        var cellWidth = this.canvas.width / Object.keys(FILES).length;
+        var file = Object.keys(FILES)[Math.floor(xPos / cellWidth)];
+        var rank = NUMRANKS - Math.floor(yPos / cellWidth);
+
+        return this.getCellByCoord("" + file + rank);
     }
 }
