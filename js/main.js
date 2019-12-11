@@ -88,17 +88,23 @@ function advanceTest(e) {
         updateStatus("Black Bishop (C8): move to F5");
     }
     else if(step == 9) {
-        blackBishop.canMove(board);
-        board.draw();
-        board.clearPossible();
-        updateStatus("Black Bishop (F5): get possible moves");
-    }
-    else if(step == 10) {
         whiteKnight.canMove(board);
         board.draw();
         board.clearPossible();
         updateStatus("White Knight (C3): get possible moves");
     }
+    else if (step == 10) {
+        whiteKnight.move(board.getCellByCoord('d5'));
+        board.draw();
+        updateStatus('White Knight (C3): move to D5');
+    }
+    else if(step == 11) {
+        blackBishop.canMove(board);
+        board.draw();
+        board.clearPossible();
+        updateStatus("Black Bishop (F5): get possible moves");
+    }
+    
     else {
         // do nothing
         advBtn.disabled = true;
@@ -110,10 +116,21 @@ function advanceTest(e) {
     step++;
 }
 
+function boardClick(e) {
+    var cell = match.board.getCellByPixels(e.layerX, e.layerY);
+    console.log('You clicked ' + cell.getCoord().toUpperCase() + '.');
+}
+
 /**
  * Start
  */
-window.onload = function() {
+window.addEventListener('load', function(e){
     init();
-    advBtn.onclick = advanceTest;
-};
+
+    canvas.addEventListener('click', boardClick);
+    advBtn.addEventListener('click', advanceTest);
+    // advBtn.addEventListener('click', function(e){ 
+    //     alert('Test is disabled.'); 
+    //     advBtn.disabled = true;
+    // });
+});

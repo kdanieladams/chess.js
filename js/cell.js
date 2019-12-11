@@ -6,10 +6,10 @@ import { FILES, NUMRANKS } from './globals.js';
 export class Cell {
     // public
     file = 0;
-    piece = null;
-    rank = 0;
     isLight = false;
     possibleMove = false;
+    piece = null;
+    rank = 0;
 
     constructor(file, rank, isLight) {
         if(isNaN(rank) || rank > NUMRANKS || rank < 1) {

@@ -38,18 +38,22 @@ export class Match {
             this.team1 = team1;
             this.team2 = team2;
 
-            this.init();
-        }
-    }
-
-    init() {
-        if(this.team1 != null && this.team2 != null && this.board != null) {
             this.setupPieces(this.team1);
             this.setupPieces(this.team2);
-            return;
+
+            return true;
         }
 
-        console.error('Match.init: called before instantiation.');
+        console.error("Match.constructor: requires an instance of Board and two of Team");
+        return false;
+    }
+
+    getBlackTeam() {
+        return this.team1.side == SIDES.black ? this.team1 : this.team2;
+    }
+
+    getWhiteTeam() {
+        return this.team1.side == SIDES.white ? this.team1 : this.team2;
     }
 
     setupPieces(team) {
@@ -85,13 +89,5 @@ export class Match {
 
     whosTurn() {
         return this.halfTurns % 2 ? SIDES.black : SIDES.white;
-    }
-
-    getWhiteTeam() {
-        return this.team1.side == SIDES.white ? this.team1 : this.team2;
-    }
-
-    getBlackTeam() {
-        return this.team1.side == SIDES.black ? this.team1 : this.team2;
     }
 }

@@ -52,17 +52,4 @@ export class Team {
     getSide() {
         return Object.keys(SIDES)[this.side];
     }
-
-    getRooks() {
-        var rooks = new Array();
-        
-        this.pieces.forEach(piece => {
-            if(piece.type == PIECETYPE.rook) {
-                // we have a rook...
-                rooks.push(piece);
-            }
-        });
-
-        return rooks;
-    }
 }
