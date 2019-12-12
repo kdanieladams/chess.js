@@ -1,4 +1,5 @@
-import { FILES, LIGHTSQCOLOR, DARKSQCOLOR, NUMRANKS, SIDES, POSSIBLESQCOLOR } from './globals.js';
+import { FILES, CASTLEABLESQCOLOR, DARKSQCOLOR, 
+    LIGHTSQCOLOR, POSSIBLESQCOLOR, NUMRANKS } from './globals.js';
 import { Cell } from './cell.js';
 
 /**
@@ -61,6 +62,7 @@ export class Board {
         for(var i = 0; i < this.cells.length; i++) {
             let cell = this.cells[i];
             cell.possibleMove = false;
+            cell.castleable = false;
         }
     }
 
@@ -97,6 +99,11 @@ export class Board {
                 this.ctx.beginPath();
                 this.ctx.lineWidth = lineWidth;
                 this.ctx.strokeStyle = POSSIBLESQCOLOR;
+
+                if(cell.castleable) {
+                    this.ctx.strokeStyle = CASTLEABLESQCOLOR;
+                }
+
                 this.ctx.rect(pxPos, pyPos, pCellWidth, pCellWidth);
                 this.ctx.stroke();
                 this.ctx.closePath();

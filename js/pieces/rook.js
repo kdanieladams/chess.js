@@ -39,14 +39,12 @@ export class Rook extends Piece {
     }
 
     move(cell) {
-        var startFile = this._cell ? this._cell.file : null;
-
         if(super.move(cell)) {
             if((cell.file != FILES.a && cell.file != FILES.h)
                 || (this.side == SIDES.black && cell.rank != 8)
                 || (this.side == SIDES.white && cell.rank != 1)) 
             {
-                // TODO: team can no longer castle on this side...
+                // team can no longer castle on this side
                 this.hasMoved = true;
             }
         }

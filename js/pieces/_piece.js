@@ -19,16 +19,12 @@ export class Piece {
     _cell = null;
     _forward = 1;
     _possibleMoves = new Array();
-    _slideDiag = false;
-    _slideVertHoriz = false;
     
     constructor(side, type) {
         this.side = side;
         this.type = type;
         
         this._forward = this.side == SIDES.white ? 1 : -1; // -1 = down, 1 = up
-        this._slideDiag = (this.type == PIECETYPE.bishop || this.type == PIECETYPE.queen);
-        this._slideVertHoriz = (this.type == PIECETYPE.rook || this.type == PIECETYPE.queen);
     }
 
     canMove() {
@@ -103,7 +99,7 @@ export class Piece {
                 let cell = board.getCellByCoord(coord);
                 
                 if(cell.isOccupied()) {
-                    if(cell.piece.getSide() != this.getSide()) {
+                    if(cell.piece.side != this.side) {
                         moves.push(coord);
                         cell.possibleMove = true;
                     }

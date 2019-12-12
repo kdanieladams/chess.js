@@ -14,8 +14,6 @@ import { King } from './pieces/king.js';
  */
 export class Team {
     captures = new Array();
-    castleKingSide = true;
-    castleQueenSide = true;
     pieces = new Array();
     side = SIDES.white;
     activePiece = null;

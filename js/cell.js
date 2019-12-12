@@ -5,6 +5,7 @@ import { FILES, NUMRANKS } from './globals.js';
  */
 export class Cell {
     // public
+    castleable = false;
     file = 0;
     isLight = false;
     possibleMove = false;

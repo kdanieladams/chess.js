@@ -33,6 +33,7 @@ export const FILES = {
 export const LIGHTSQCOLOR = '#919191';
 export const DARKSQCOLOR = '#333';
 export const POSSIBLESQCOLOR = '#40ff00';
+export const CASTLEABLESQCOLOR = '#5900b3';
 
 /**
  * Functions

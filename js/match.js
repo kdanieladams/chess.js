@@ -68,14 +68,10 @@ export class Match {
             && cell.piece.side == activeTeam.side) 
         {
             let piece = cell.piece;
-            // let msg = CAPITALIZE(activeTeam.getSide()) 
-            //     + " selected " + CAPITALIZE(piece.getPieceType()) 
-            //     + " (" + cell.getCoord().toUpperCase() + ").";
 
             activeTeam.activePiece = piece;
             piece.canMove(this.board);
             this.board.draw();
-            // this.updateStatus(msg);
         }
         else if(activeTeam.activePiece != null && cell.possibleMove) {
             let msg = CAPITALIZE(activeTeam.getSide()) + " moves " 
@@ -84,14 +80,21 @@ export class Match {
                 + cell.getCoord().toUpperCase() + ".";
             
             this.updateStatus(msg);
-            activeTeam.activePiece.move(cell);
+
+            if(activeTeam.activePiece.type == PIECETYPE.king
+                && !activeTeam.activePiece.hasMoved) 
+            {
+                activeTeam.activePiece.move(cell, this.board);
+            }
+            else {
+                activeTeam.activePiece.move(cell);
+            }
+            
             this.clearPossible();
             this.board.draw();
             this.finishTurn();
         }
         else {
-            // this.updateStatus(CAPITALIZE(activeTeam.getSide()) 
-            //     + " clicked " + cell.getCoord().toUpperCase() + ".");
             this.clearPossible();
             this.board.draw();
         }
