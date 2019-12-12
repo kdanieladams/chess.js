@@ -7,6 +7,12 @@ body {
     font-family: sans-serif;
 }
 
+p {
+    max-width: 940px;
+    margin: 10px auto;
+    line-height: 1.5em;
+}
+
 /**
  * Classes
  */
@@ -32,6 +38,10 @@ body {
 .rank {
     height: 80px;
     line-height: 80px;
+}
+
+.topMsg {
+    color: #ccc;
 }
 
 /**
@@ -61,8 +71,13 @@ body {
     margin-left: 20px;
 }
 
-#test_status {
-    display: block;
+#status_box {
+    height: 55px;
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    border: solid 1px #999;
+    color: #555;
     text-align: center;
     font-size: 16px;
 }

@@ -1,19 +1,16 @@
-import { FILES, PIECETYPE, SIDES } from './globals.js';
+import { CAPITALIZE, FILES, PIECETYPE, SIDES } from './globals.js';
 import { Board } from './board.js';
 import { Team } from './team.js';
 
 /**
  * Match
- * 
- * Tracks properties and indexes of a match.  Consists of stuff from the tut...mainly.
- * My take is that alot of this has to do with the AI engine, which I may or may not be 
- * fully implementing.
  */
 export class Match {
     // placeholders for object instances
     board = null;
     team1 = null;
     team2 = null;
+    statusCallback = null;
 
     // full turns for both white & black
     turns = 0;      
@@ -27,7 +24,9 @@ export class Match {
     // draw if in 50 turns, no pawn has moved and no piece has been captured
     fiftyMove = 0;
 
-    constructor(board, team1, team2) {
+    msgs = new Array();
+
+    constructor(board, team1, team2, statusCallback) {
         // verify type of each param
         if(board instanceof Board 
             && team1 instanceof Team 
@@ -41,11 +40,71 @@ export class Match {
             this.setupPieces(this.team1);
             this.setupPieces(this.team2);
 
+            if(typeof(statusCallback) == 'function') {
+                this.statusCallback = statusCallback;
+            }
+
+            this.updateStatus("It\'s White\'s turn.");
+
             return true;
         }
 
         console.error("Match.constructor: requires an instance of Board and two of Team");
         return false;
+    }
+
+    clearPossible() {
+        this.board.clearPossible();
+        this.team1.clearPossible();
+        this.team2.clearPossible();
+    }
+
+    click(event) {
+        var cell = this.board.getCellByPixels(event.layerX, event.layerY);
+        var activeTeam = this.team1.side == this.whosTurn() ? this.team1 : this.team2;
+
+        if(activeTeam.activePiece == null 
+            && cell.isOccupied() 
+            && cell.piece.side == activeTeam.side) 
+        {
+            let piece = cell.piece;
+            // let msg = CAPITALIZE(activeTeam.getSide()) 
+            //     + " selected " + CAPITALIZE(piece.getPieceType()) 
+            //     + " (" + cell.getCoord().toUpperCase() + ").";
+
+            activeTeam.activePiece = piece;
+            piece.canMove(this.board);
+            this.board.draw();
+            // this.updateStatus(msg);
+        }
+        else if(activeTeam.activePiece != null && cell.possibleMove) {
+            let msg = CAPITALIZE(activeTeam.getSide()) + " moves " 
+                + CAPITALIZE(activeTeam.activePiece.getPieceType()) + " ("
+                + activeTeam.activePiece.getCoord().toUpperCase() + ") to "
+                + cell.getCoord().toUpperCase() + ".";
+            
+            this.updateStatus(msg);
+            activeTeam.activePiece.move(cell);
+            this.clearPossible();
+            this.board.draw();
+            this.finishTurn();
+        }
+        else {
+            // this.updateStatus(CAPITALIZE(activeTeam.getSide()) 
+            //     + " clicked " + cell.getCoord().toUpperCase() + ".");
+            this.clearPossible();
+            this.board.draw();
+        }
+    }
+
+    finishTurn() {
+        this.halfTurns++;
+
+        if(this.halfTurns % 2 == 0)
+            this.turns++;
+
+        let team = this.team1.side == this.whosTurn() ? this.team1 : this.team2;
+        this.updateStatus("It\'s " + CAPITALIZE(team.getSide()) + "\'s turn.");
     }
 
     getBlackTeam() {
@@ -85,6 +144,27 @@ export class Match {
             else if(i == 14) piece.move(board.getCellByCoord("d" + rank));
             else if(i == 15) piece.move(board.getCellByCoord("e" + rank));
         }
+    }
+
+    updateStatus(msg) {
+        this.msgs.push(msg);
+
+        if(this.statusCallback) {
+            let string = "";
+            
+            for(let i = 0; i < this.msgs.length; i++) {
+                if(i == this.msgs.length - 1) {
+                    string += "<span class='topMsg'>" + this.msgs[i] + "</span><br>\n";
+                    continue;
+                }
+
+                string += this.msgs[i] + "<br>\n";
+            }
+            
+            return this.statusCallback(string);
+        }
+
+        return;
     }
 
     whosTurn() {

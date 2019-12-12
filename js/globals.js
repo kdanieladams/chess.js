@@ -1,5 +1,5 @@
 /**
- * Global Constants
+ * Enums
  */
 export const PIECETYPE = {
     empty: 0,
@@ -33,6 +33,16 @@ export const FILES = {
 export const LIGHTSQCOLOR = '#919191';
 export const DARKSQCOLOR = '#333';
 export const POSSIBLESQCOLOR = '#40ff00';
+
+/**
+ * Functions
+ */
+export const CAPITALIZE = function(string){
+    if (typeof string !== 'string') 
+        return '';
+
+    return string.charAt(0).toUpperCase() + string.slice(1);
+};
 
 /**
  * Miscellaenous

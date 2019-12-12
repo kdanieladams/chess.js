@@ -9,116 +9,34 @@ import { Team } from './team.js';
  * Main thread for the game.
  */
 
-// runtime globals
 var canvas = document.getElementById('chess_board');
 var match = null;
 var pieces_img = document.getElementById('pieces_img');
+var statusBox = document.getElementById('status_box');
 
-// testing devices
-var advBtn = document.getElementById('advance_btn');
-var statusBox = document.getElementById('test_status');
-var step = 0;
-
-function init() {
-    match = new Match(new Board(canvas, pieces_img), new Team(SIDES.white), new Team(SIDES.black));
-    match.board.draw();
-    
-    console.log('init complete...');
-}
-
+/**
+ * Global Functions
+ */
 function updateStatus(msg) {
     statusBox.innerHTML = msg;
+    statusBox.scrollTop = statusBox.scrollHeight;
 }
 
-function advanceTest(e) {
-    var whitePawn = match.getWhiteTeam().pieces[4];
-    var whiteKnight = match.getWhiteTeam().pieces[10];
-    var blackPawn = match.getBlackTeam().pieces[3];
-    var blackBishop = match.getBlackTeam().pieces[12];
-    var board = match.board;
+/**
+ * Initialization
+ */
+function init() {
+    match = new Match(new Board(canvas, pieces_img), 
+        new Team(SIDES.white), 
+        new Team(SIDES.black),
+        updateStatus);
 
-    if(step == 0){
-        whitePawn.canMove(board);
-        board.draw();
-        board.clearPossible();
-        updateStatus("White Pawn (E2): get possible moves");
-    }
-    else if(step == 1) {
-        whitePawn.move(board.getCellByCoord('e4'));
-        board.draw();
-        updateStatus("White Pawn (E2): move to E4");
-    }
-    else if(step == 2) {
-        blackPawn.canMove(board);
-        board.draw();
-        board.clearPossible();
-        updateStatus("Black Pawn (D7): get possible moves");
-    }
-    else if(step == 3) {
-        blackPawn.move(board.getCellByCoord('d5'));
-        board.draw();
-        updateStatus("Black Pawn (D7): move to D5");
-    }
-    else if(step == 4) {
-        whitePawn.canMove(board);
-        board.draw();
-        board.clearPossible();
-        updateStatus("White Pawn (E4): get possible moves");
-    }
-    else if(step == 5) {
-        whiteKnight.canMove(board);
-        board.draw();
-        board.clearPossible();
-        updateStatus("White Knight (B1): get possible moves");
-    }
-    else if(step == 6) {
-        whiteKnight.move(board.getCellByCoord('c3'));
-        board.draw();
-        updateStatus("White Knight (B1): move to C3");
-    }
-    else if (step == 7) {
-        blackBishop.canMove(board);
-        board.draw();
-        board.clearPossible();
-        updateStatus("Black Bishop (C8): get possible moves");
-    }
-    else if (step == 8) {
-        blackBishop.move(board.getCellByCoord("f5"));
-        board.draw();
-        updateStatus("Black Bishop (C8): move to F5");
-    }
-    else if(step == 9) {
-        whiteKnight.canMove(board);
-        board.draw();
-        board.clearPossible();
-        updateStatus("White Knight (C3): get possible moves");
-    }
-    else if (step == 10) {
-        whiteKnight.move(board.getCellByCoord('d5'));
-        board.draw();
-        updateStatus('White Knight (C3): move to D5');
-    }
-    else if(step == 11) {
-        blackBishop.canMove(board);
-        board.draw();
-        board.clearPossible();
-        updateStatus("Black Bishop (F5): get possible moves");
-    }
+    match.board.draw();
+    canvas.addEventListener('click', function(e){
+        match.click(e);
+    });
     
-    else {
-        // do nothing
-        advBtn.disabled = true;
-        board.draw();
-        updateStatus("Test complete.");
-        return;
-    }
-
-    step++;
-}
-
-function boardClick(e) {
-    var cell = match.board.getCellByPixels(e.layerX, e.layerY);
-    console.log('You clicked ' + cell.getCoord().toUpperCase() + '.');
+    console.log('init complete...');
 }
 
 /**
@@ -126,11 +44,4 @@ function boardClick(e) {
  */
 window.addEventListener('load', function(e){
     init();
-
-    canvas.addEventListener('click', boardClick);
-    advBtn.addEventListener('click', advanceTest);
-    // advBtn.addEventListener('click', function(e){ 
-    //     alert('Test is disabled.'); 
-    //     advBtn.disabled = true;
-    // });
 });

@@ -61,9 +61,6 @@ export class Board {
         for(var i = 0; i < this.cells.length; i++) {
             let cell = this.cells[i];
             cell.possibleMove = false;
-            if(cell.isOccupied()) {
-                cell.piece.active = false;
-            }
         }
     }
 
@@ -77,7 +74,7 @@ export class Board {
             let cell = this.cells[i];
             let xPos = cell.file * cellWidth;
             let yPos = (NUMRANKS * cellWidth) - (cellWidth * (cell.rank - 1)) - cellWidth;
-            
+
             this.ctx.beginPath();
             this.ctx.fillStyle = cell.isLight ? lightCol : darkCol;
 

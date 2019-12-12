@@ -18,6 +18,7 @@ export class Team {
     castleQueenSide = true;
     pieces = new Array();
     side = SIDES.white;
+    activePiece = null;
     
     constructor(isWhite) { 
         this.side = isWhite && isWhite >= 1 ? SIDES.white : SIDES.black;
@@ -47,6 +48,15 @@ export class Team {
         // royalty
         this.pieces.push(new Queen(this.side));  // 14
         this.pieces.push(new King(this.side));   // 15
+    }
+
+    clearPossible() {
+        this.activePiece = null;
+        
+        for(var i = 0; i < this.pieces.length; i++) {
+            let piece = this.pieces[i];
+            piece.active = false;
+        }
     }
 
     getSide() {
