@@ -72,8 +72,9 @@ p {
 }
 
 #status_box {
-    height: 55px;
+    height: 75px;
     width: 100%;
+    padding-top: 10px;
     overflow-x: hidden;
     overflow-y: scroll;
     border: solid 1px #999;

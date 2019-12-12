@@ -23,10 +23,12 @@ export class Bishop extends Piece {
             this._possibleMoves = [];
 
             // can slide diagonally            
-            this._possibleMoves = this._possibleMoves.concat(this.getDiagMoves(board, true, false));  // forward and left
-            this._possibleMoves = this._possibleMoves.concat(this.getDiagMoves(board, true, true));   // forward and right
-            this._possibleMoves = this._possibleMoves.concat(this.getDiagMoves(board, false, false)); // backward and left
-            this._possibleMoves = this._possibleMoves.concat(this.getDiagMoves(board, false, true));  // backward and right
+            this._possibleMoves = this._possibleMoves.concat(
+                this.getDiagMoves(board, true, false),  // forward and left
+                this.getDiagMoves(board, true, true),   // forward and right
+                this.getDiagMoves(board, false, false), // backward and left
+                this.getDiagMoves(board, false, true)   // backward and right
+            );
 
             return this._possibleMoves;
         }

@@ -1,4 +1,5 @@
-import { SIDES, PIECETYPE, FILES } from '../globals.js';
+import { FILES, PIECETYPE, SIDES } from '../globals.js';
+import { Board } from '../board.js';
 import { Piece } from './_piece.js';
 
 /**
@@ -17,12 +18,24 @@ export class Rook extends Piece {
         ];
     }
 
-    canMove() {
-        // can slide up & down until end of board
-        // can slide left & right until end of board
-        // cannot jump other pieces on team
-        // encountering an opponent piece will halt forward movement
-        return [];
+    canMove(board) {
+        if(board instanceof Board) {
+            this.active = true;
+            this._possibleMoves = [];
+
+            // can slide up-down-left-right until end of board
+            this._possibleMoves = this._possibleMoves.concat(
+                this.getPerpMoves(board, true, true),   // vertical up
+                this.getPerpMoves(board, true, false),  // vertical down
+                this.getPerpMoves(board, false, true),  // horizontal right
+                this.getPerpMoves(board, false, false)  // horizontal left
+            );
+            
+            return this._possibleMoves;
+        }
+
+        console.error("Rook.canMove: Invalid board");
+        return false;
     }
 
     move(cell) {

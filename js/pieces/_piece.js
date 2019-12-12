@@ -58,38 +58,29 @@ export class Piece {
             right = !!right;
     
             var coord = this.getCoord();
-            var moves = new Array();
             var incFile = right ? 1 : -1;
             var incRank = (forward ? 1 : -1) * this._forward;
     
-            while(board.cellInBounds(coord)) {
-                let file = FILES[coord[0]];
-                let rank = parseInt(coord[1]);
-
-                if(coord != this.getCoord())  {
-                    let cell = board.getCellByCoord(coord);
-                    
-                    // check if cell is occupied
-                    if(cell.isOccupied()) {
-                        if(cell.piece.getSide() != this.getSide()) {
-                            moves.push(coord);
-                            cell.possibleMove = true;
-                        }
-                        
-                        break;
-                    }
-
-                    moves.push(coord);
-                    cell.possibleMove = true;
-                }
-
-                coord = "" + Object.keys(FILES)[file + incFile] + (rank + incRank);
-            }
-    
-            return moves;
+            return this.iterateMoves(board, coord, incFile, incRank);
         }
         
         console.error("Piece.getDiagMoves: Invalid board");
+        return false;
+    }
+
+    getPerpMoves(board, vertical, positive) {
+        if(board instanceof Board) {
+            vertical = !!vertical;
+            positive = !!positive;
+
+            var coord = this.getCoord();
+            var incFile = !vertical ? (positive ? 1 : -1) : 0;
+            var incRank = vertical ? (positive ? 1 : -1) * this._forward : 0;
+
+            return this.iterateMoves(board, coord, incFile, incRank);
+        }
+
+        console.error("Piece.getPerpMoves: Invalid board");
         return false;
     }
 
@@ -99,6 +90,35 @@ export class Piece {
 
     getSide() {
         return Object.keys(SIDES)[this.side];
+    }
+
+    iterateMoves(board, coord, incFile, incRank) {
+        var moves = new Array();
+
+        while(board.cellInBounds(coord)) {
+            let file = FILES[coord[0]];
+            let rank = parseInt(coord[1]);
+
+            if(coord != this.getCoord())  {
+                let cell = board.getCellByCoord(coord);
+                
+                if(cell.isOccupied()) {
+                    if(cell.piece.getSide() != this.getSide()) {
+                        moves.push(coord);
+                        cell.possibleMove = true;
+                    }
+                    
+                    break;
+                }
+                
+                moves.push(coord);
+                cell.possibleMove = true;
+            }
+
+            coord = "" + Object.keys(FILES)[file + incFile] + (rank + incRank);
+        }
+
+        return moves;
     }
 
     move(cell) {
@@ -118,4 +138,5 @@ export class Piece {
 
         return false;
     }
+
 }
