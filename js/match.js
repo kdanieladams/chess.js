@@ -60,7 +60,7 @@ export class Match {
     }
 
     click(event) {
-        var cell = this.board.getCellByPixels(event.layerX, event.layerY);
+        var cell = this.board.getCellByPixels(event.offsetX, event.offsetY);
         var activeTeam = this.team1.side == this.whosTurn() ? this.team1 : this.team2;
 
         if(activeTeam.activePiece == null 
