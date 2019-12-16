@@ -1,4 +1,4 @@
-import { CAPITALIZE, FILES, PIECETYPE, SIDES } from './globals.js';
+import { SIDES } from './globals.js';
 import { Piece } from './pieces/_piece.js';
 
 /**

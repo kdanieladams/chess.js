@@ -1,4 +1,4 @@
-import { CAPITALIZE, FILES, PIECETYPE, SIDES } from './globals.js';
+import { FILES, PIECETYPE, SIDES } from './globals.js';
 import { Action } from './action.js';
 import { Board } from './board.js';
 import { Team } from './team.js';
@@ -8,10 +8,11 @@ import { Turn } from './turn.js';
  * Match
  */
 export class Match {
-    // placeholders for object instances
+    // placeholders for object instances & callback functions
     board = null;
     team1 = null;
     team2 = null;
+    scoreCallback = null;
     statusCallback = null;
 
     // internal collections
@@ -27,7 +28,7 @@ export class Match {
     // draw if in 50 turns, no pawn has moved and no piece has been captured
     fiftyMove = 0;
 
-    constructor(board, team1, team2, statusCallback) {
+    constructor(board, team1, team2, statusCallback, scoreCallback) {
         // verify type of each param
         if(board instanceof Board 
             && team1 instanceof Team 
@@ -43,6 +44,10 @@ export class Match {
 
             if(typeof(statusCallback) == 'function') {
                 this.statusCallback = statusCallback;
+            }
+            
+            if(typeof(scoreCallback) == 'function') {
+                this.scoreCallback = scoreCallback;
             }
 
             this.updateStatus("It\'s White\'s turn.");
@@ -75,8 +80,8 @@ export class Match {
             this.board.draw();
         }
         else if(activeTeam.activePiece != null && cell.possibleMove) {
-            let msg = CAPITALIZE(activeTeam.getSide()) + " moves " 
-                + CAPITALIZE(activeTeam.activePiece.getPieceType()) + "("
+            let msg = activeTeam.getSide() + " moves " 
+                + activeTeam.activePiece.getPieceType() + "("
                 + activeTeam.activePiece.getCoord().toUpperCase() + ") to "
                 + cell.getCoord().toUpperCase() + ".";
             
@@ -104,7 +109,7 @@ export class Match {
 
     finishTurn() {
         var team = this.team1.side == this.whosTurn() ? this.team1 : this.team2;
-        this.updateStatus("It\'s " + CAPITALIZE(team.getSide()) + "\'s turn.");
+        this.updateStatus("It\'s " + team.getSide() + "\'s turn.");
     }
 
     getBlackTeam() {
@@ -162,16 +167,18 @@ export class Match {
         if(cell.isOccupied()) {
             let activeTeam = this.whosTurn() == this.team1.side ? this.team1 : this.team2;
             let notActiveSide = activeTeam.side == this.team1.side ? this.team2.getSide() : this.team1.getSide();
-            let msg = CAPITALIZE(activeTeam.getSide()) + " captures " 
-                + CAPITALIZE(notActiveSide) + " " + CAPITALIZE(cell.piece.getPieceType())
+            let msg = activeTeam.getSide() + " captures " 
+                + notActiveSide + " " + cell.piece.getPieceType()
                 + "(" + cell.getCoord().toUpperCase() + ") \+" + cell.piece.value + "pts.";
             let pieceCopy = null; 
 
-            this.updateStatus(msg);
             cell.piece.captured = true;
             pieceCopy = Object.assign({}, cell.piece);
             activeTurn.captures.push(pieceCopy);
             activeTeam.captures.push(pieceCopy);
+
+            this.updateStatus(msg);
+            this.updateScore();
         }
 
         this.halfTurns++;
@@ -193,6 +200,14 @@ export class Match {
             }
             
             return this.statusCallback(string);
+        }
+
+        return;
+    }
+
+    updateScore() {
+        if(this.scoreCallback) {
+            return this.scoreCallback();
         }
 
         return;

@@ -7,6 +7,29 @@ body {
     font-family: sans-serif;
 }
 
+button {
+    background-color: #333;
+    color: #919191;
+    margin: 5px;
+    border: solid 1px #555;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+/* button:hover {
+    cursor: pointer;
+} */
+
+button:active {
+    background-color: #121212;
+}
+
+button > span.symbol {
+    font-size: 28px;
+    vertical-align: middle;
+    line-height: 0;
+}
+
 p {
     max-width: 940px;
     margin: 10px auto;
@@ -30,6 +53,21 @@ p {
     font-family: Courier;
 }
 
+.colLeft {
+    float: left;
+    width: 25%;
+}
+
+.colRight {
+    float: right;
+    width: 75%;
+}
+
+.colLeft h4, .colRight h4 {
+    text-align: center;
+    margin: 0 0 5px 0;
+}
+
 .file {
     width: 80px;
     float: left;
@@ -40,8 +78,27 @@ p {
     line-height: 80px;
 }
 
+.row {
+    width: 100%;
+}
+
+.row::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
 .topMsg {
     color: #ccc;
+}
+
+.undoBtn {
+    background-color: #c00;
+    color: #ccc;
+}
+
+.undoBtn:active {
+    background-color: #500;
 }
 
 /**
@@ -50,6 +107,10 @@ p {
 #chess_board {
     margin: 10px;
     border: solid 1px #999;
+}
+
+#file_row {
+    margin-left: 20px;
 }
 
 #pieces_img {
@@ -67,13 +128,18 @@ p {
     display: table;
 }
 
-#file_row {
-    margin-left: 20px;
+#score_box {
+    padding: 10px;
+    text-align: left;
+    background-color: #212121;
+}
+
+#score_box > .teamScore {
+    display: block;
 }
 
 #status_box {
     height: 75px;
-    width: 100%;
     padding-top: 10px;
     overflow-x: hidden;
     overflow-y: scroll;
