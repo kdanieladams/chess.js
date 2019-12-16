@@ -30,10 +30,10 @@ export const FILES = {
 /**
  * Colors
  */
-export const LIGHTSQCOLOR = '#919191';
-export const DARKSQCOLOR = '#333';
-export const POSSIBLESQCOLOR = '#40ff00';
-export const CASTLEABLESQCOLOR = '#5900b3';
+export const LIGHTSQCOLOR       = '#919191';
+export const DARKSQCOLOR        = '#333';
+export const POSSIBLESQCOLOR    = '#40ff00';
+export const CASTLEABLESQCOLOR  = '#5900b3';
 
 /**
  * Functions
@@ -46,8 +46,8 @@ export const CAPITALIZE = function(string){
 };
 
 /**
- * Miscellaenous
+ * Dimensions
  */
-export const NUMRANKS = 8;
-// export const NUMFILES = Object.keys(FILES).length;
-export const PIECESPRITEWIDTH = 100;
+export const NUMRANKS           = 8;
+// export const NUMFILES        = Object.keys(FILES).length;
+export const PIECESPRITEWIDTH   = 100;

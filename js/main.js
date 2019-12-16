@@ -11,7 +11,7 @@ import { Team } from './team.js';
 
 var canvas = document.getElementById('chess_board');
 var match = null;
-var pieces_img = document.getElementById('pieces_img');
+var piecesImg = document.getElementById('pieces_img');
 var statusBox = document.getElementById('status_box');
 
 /**
@@ -26,7 +26,7 @@ function updateStatus(msg) {
  * Initialization
  */
 function init() {
-    match = new Match(new Board(canvas, pieces_img), 
+    match = new Match(new Board(canvas, piecesImg), 
         new Team(SIDES.white), 
         new Team(SIDES.black),
         updateStatus);

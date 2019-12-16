@@ -1,4 +1,4 @@
-import { SIDES, PIECETYPE } from './globals.js';
+import { CAPITALIZE, SIDES } from './globals.js';
 import { Pawn } from './pieces/pawn.js';
 import { Rook } from './pieces/rook.js';
 import { Knight } from './pieces/knight.js';
@@ -58,6 +58,6 @@ export class Team {
     }
 
     getSide() {
-        return Object.keys(SIDES)[this.side];
+        return CAPITALIZE(Object.keys(SIDES)[this.side]);
     }
 }

@@ -1,4 +1,4 @@
-import { FILES, PIECESPRITEWIDTH, PIECETYPE, SIDES } from '../globals.js';
+import { CAPITALIZE, FILES, PIECESPRITEWIDTH, PIECETYPE, SIDES } from '../globals.js';
 import { Board } from '../board.js';
 import { Cell } from '../cell.js';
 
@@ -10,10 +10,11 @@ import { Cell } from '../cell.js';
  */
 export class Piece {
     // public
+    active = false;
+    captured = false;
     side = SIDES.white;
     type = PIECETYPE.pawn;
     value = 100;
-    active = false;
 
     // private
     _cell = null;
@@ -81,11 +82,11 @@ export class Piece {
     }
 
     getPieceType() {
-        return Object.keys(PIECETYPE)[this.type];
+        return CAPITALIZE(Object.keys(PIECETYPE)[this.type]);
     }
 
     getSide() {
-        return Object.keys(SIDES)[this.side];
+        return CAPITALIZE(Object.keys(SIDES)[this.side]);
     }
 
     iterateMoves(board, coord, incFile, incRank) {
@@ -122,9 +123,7 @@ export class Piece {
         if(cell instanceof Cell && this._possibleMoves.includes(cell.getCoord())) {
             if(this._cell != null) 
                 this._cell.piece = null;
-
-            // TODO: handle captures
-                        
+            
             this._cell = cell;
             this._cell.piece = this;
             this._possibleMoves = [];
