@@ -7,15 +7,16 @@ import { Piece } from './_piece.js';
  */
 export class Rook extends Piece {
     hasMoved = false;
+    origCoord = [
+        'a1', 'h1', 'a8', 'h8'
+    ];
     value = 550;
 
     constructor(side) {
         super(side, PIECETYPE.rook);
 
         // init possible starting locations
-        this._possibleMoves = [
-            'a1', 'h1', 'a8', 'h8'
-        ];
+        this._possibleMoves = this.origCoord;
     }
 
     canMove(board) {

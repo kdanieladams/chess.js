@@ -9,16 +9,17 @@ import { Piece } from './_piece.js';
  */
 export class Pawn extends Piece {
     hasMoved = false;
+    origCoord = [
+        'a2', 'b2', 'c2', 'd2', 'e2', 'f2', 'g2', 'h2',
+        'a7', 'b7', 'c7', 'd7', 'e7', 'f7', 'g7', 'h7',
+    ];
     value = 100;
 
     constructor(side) {
         super(side, PIECETYPE.pawn);
 
         // init possible starting locations
-        this._possibleMoves = [
-            'a2', 'b2', 'c2', 'd2', 'e2', 'f2', 'g2', 'h2',
-            'a7', 'b7', 'c7', 'd7', 'e7', 'f7', 'g7', 'h7',
-        ];
+        this._possibleMoves = this.origCoord;
     }
 
     canMove(board) {
@@ -31,20 +32,18 @@ export class Pawn extends Piece {
 
             // can always move forward 1 sq
             var mv1sq = "" + this._cell.getFile() + (rank + this._forward);
-            if(board.cellInBounds(mv1sq)) {
-                let cell = board.getCellByCoord(mv1sq);
-                if(!cell.isOccupied()) {
-                    this._possibleMoves.push(mv1sq);
-                }
+            var cell1 = board.getCellByCoord(mv1sq);
+            if(board.cellInBounds(mv1sq) && !cell1.isOccupied()) {
+                this._possibleMoves.push(mv1sq);
             }
 
             // on first move, can move 2 sqs
             var mv2sq = "" + this._cell.getFile() + (rank + this._forward + this._forward);
-            if(!this.hasMoved && board.cellInBounds(mv2sq)) {
-                let cell = board.getCellByCoord(mv2sq);
-                if(!cell.isOccupied()) {
-                    this._possibleMoves.push(mv2sq);
-                }
+            var cell2 = board.getCellByCoord(mv2sq);
+            if(!this.hasMoved && board.cellInBounds(mv2sq)
+                && !cell2.isOccupied() && !cell1.isOccupied())
+            {
+                this._possibleMoves.push(mv2sq);
             }
 
             // can only attack diagonally

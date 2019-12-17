@@ -6,16 +6,17 @@ import { Piece } from './_piece.js';
  * King
  */
 export class King extends Piece {
-    value = 50000;
     hasMoved = false;
+    origCoord = [
+        'e1', 'e8'
+    ];
+    value = 50000;
 
     constructor(side) {
         super(side, PIECETYPE.king);
 
         // init possible starting locations
-        this._possibleMoves = [
-            'e1', 'e8'
-        ];
+        this._possibleMoves = this.origCoord;
     }
 
     canMove(board) {

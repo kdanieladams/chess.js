@@ -184,8 +184,66 @@ export class Match {
         this.halfTurns++;
     }
 
+    undoMove() {
+        var latestTurn = this.turns[this.turns.length - 1];
+        var latestAction = latestTurn.blackAction != null ? latestTurn.blackAction : latestTurn.whiteAction;
+        var piece = latestAction.movedPiece;
+        var capturedPiece = latestTurn.captures.length > 0 ? latestTurn.captures[latestTurn.captures.length - 1] : null;
+
+        // move the piece to it's originating position
+        piece._possibleMoves = [latestAction.startCoord];
+        piece.move(this.board.getCellByCoord(latestAction.startCoord));
+
+        // remove hasMoved where applicable
+        if(piece.hasMoved != null && piece.origCoord != null 
+            && piece.origCoord.includes(latestAction.startCoord)) 
+        {
+            piece.hasMoved = false;
+        }
+
+        // replace any captured piece
+        if(capturedPiece != null) {
+            let capTeam = capturedPiece.side == SIDES.white ? this.getWhiteTeam() : this.getBlackTeam();
+            let offTeam = capTeam == this.team1 ? this.team2 : this.team1;
+            
+            for(let i = 0; i < capTeam.pieces.length; i++) {
+                let capPieceInst = capTeam.pieces[i];
+
+                if(capPieceInst.captured 
+                    && capPieceInst.type == capturedPiece.type
+                    && capPieceInst.getCoord() == latestAction.endCoord)
+                {
+                    capPieceInst.captured = false;
+                    capPieceInst._possibleMoves = [latestAction.endCoord];
+                    capPieceInst.move(this.board.getCellByCoord(latestAction.endCoord));
+                    break;
+                }
+            }
+
+            // remove captured pieces from Team.captured
+            offTeam.captures.pop();
+            this.updateScore();
+            this.msgs.pop(); // "White captures Black Pawn (E7)."
+        }
+
+        // remove the action from the log
+        if(latestAction.side == SIDES.black)
+            latestTurn.blackAction = null;
+        else
+            this.turns.pop();
+
+        this.halfTurns--;
+        this.msgs.pop(); // "It's White's turn."
+        this.msgs.pop(); // "Black moves Pawn(A7) to A5"
+        this.updateStatus();
+
+        // re-draw the board
+        this.board.draw();
+    }
+
     updateStatus(msg) {
-        this.msgs.push(msg);
+        if(typeof(msg) == 'string' && msg.length > 0)
+            this.msgs.push(msg);
 
         if(this.statusCallback) {
             let string = "";

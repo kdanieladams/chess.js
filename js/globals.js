@@ -48,6 +48,6 @@ export const CAPITALIZE = function(string){
 /**
  * Dimensions
  */
-export const NUMRANKS           = 8;
-// export const NUMFILES        = Object.keys(FILES).length;
-export const PIECESPRITEWIDTH   = 100;
+export const NUMRANKS = 8;
+export const NUMFILES = Object.keys(FILES).length;
+export const PIECESPRITEWIDTH = 100;
