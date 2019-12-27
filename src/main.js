@@ -12,13 +12,6 @@ import { Team } from './team.js';
 // Runtime Globals
 var match = null;
 
-// HTML Elements
-var canvas      = document.getElementById('chess_board');
-var piecesImg   = document.getElementById('pieces_img');
-var scoreBox    = document.getElementById('score_box');
-var statusBox   = document.getElementById('status_box');
-var undoBtn     = document.getElementById('undo_btn');
-
 /**
  * Global Functions
  */
@@ -44,6 +37,7 @@ function fillBoardAxes() {
 }
 
 function updateScore() {
+    var scoreBox = document.getElementById('score_box');
     var whiteScore = match.team1.side == SIDES.white ? match.team1.getScore() : match.team2.getScore();
     var blackScore = match.team1.side == SIDES.black ? match.team1.getScore() : match.team2.getScore();
 
@@ -52,6 +46,8 @@ function updateScore() {
 }
 
 function updateStatus(msg) {
+    var statusBox = document.getElementById('status_box');
+
     statusBox.innerHTML = msg;
     statusBox.scrollTop = statusBox.scrollHeight;
 }
@@ -60,6 +56,10 @@ function updateStatus(msg) {
  * Initialization
  */
 function init() {
+    var canvas = document.getElementById('chess_board');
+    var piecesImg = document.getElementById('pieces_img');
+    var undoBtn = document.getElementById('undo_btn');
+
     match = new Match(new Board(canvas, piecesImg), 
         new Team(SIDES.white), 
         new Team(SIDES.black),

@@ -69,6 +69,7 @@ export class Match {
         var cell = this.board.getCellByPixels(event.offsetX, event.offsetY);
         var activeTeam = this.team1.side == this.whosTurn() ? this.team1 : this.team2;
 
+        // select a piece to move
         if(activeTeam.activePiece == null 
             && cell.isOccupied() 
             && cell.piece.side == activeTeam.side) 
@@ -79,6 +80,7 @@ export class Match {
             piece.canMove(this.board);
             this.board.draw();
         }
+        // move a piece to a possible cell
         else if(activeTeam.activePiece != null && cell.possibleMove) {
             let msg = activeTeam.getSide() + " moves " 
                 + activeTeam.activePiece.getPieceType() + "("
@@ -101,6 +103,7 @@ export class Match {
             this.board.draw();
             this.finishTurn();
         }
+        // de-select a piece to move
         else {
             this.clearPossible();
             this.board.draw();
