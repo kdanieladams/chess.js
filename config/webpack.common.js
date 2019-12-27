@@ -2,10 +2,6 @@ const path = require('path');
 
 module.exports = {
     entry: './src/main.js',
-    output: {
-        filename: 'chess.js',
-        path: path.resolve(__dirname, 'dist')
-    },
     module: {
         rules: [
             {
@@ -27,5 +23,8 @@ module.exports = {
                 }
             }
         ]
+    },
+    output: {
+        path: path.resolve(__dirname, '../dist')
     }
 };

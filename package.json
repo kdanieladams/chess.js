@@ -2,7 +2,7 @@
     "author": "Dan Adams",
     "description": "Simple chess engine written in ES6.",
     "name": "chess",
-    "license": "GPL3",
+    "license": "MIT",
     "private": true,
     "version": "0.0.1",
     "devDependencies": {
@@ -12,14 +12,16 @@
         "@babel/preset-env": "^7.7.7",
         "babel-loader": "^8.0.6",
         "webpack": "^4.41.4",
-        "webpack-cli": "^3.3.10"
+        "webpack-cli": "^3.3.10",
+        "webpack-merge": "^4.2.2"
     },
     "dependencies": {
         "@babel/polyfill": "^7.7.0"
     },
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
+        "test": "echo \"Warning: no test specified\" && exit 1",
         "start": "node server.js",
-        "build": "webpack"
+        "build": "webpack --config config/webpack.dev.js",
+        "build_prod": "webpack --config config/webpack.prod.js"
     }
 }
