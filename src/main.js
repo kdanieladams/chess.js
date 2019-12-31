@@ -9,7 +9,7 @@ import { Team } from './team.js';
  * Main thread for the game.
  */
 
-// Runtime Globals
+// Runtime global placeholder for the match instance.
 var match = null;
 
 /**

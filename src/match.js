@@ -129,8 +129,8 @@ export class Match {
         var pawnRank = team.side == SIDES.white ? "2" : "7";
         var rank = team.side == SIDES.white ? "1" : "8";
         
-        for(var i = 0; i < team.pieces.length; i++) {
-            var piece = team.pieces[i];
+        for(let i = 0; i < team.pieces.length; i++) {
+            let piece = team.pieces[i];
 
             // pawns
             if(i < filesArr.length && piece.type == PIECETYPE.pawn)

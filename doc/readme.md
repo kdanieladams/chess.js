@@ -25,15 +25,14 @@ Generally, I debug using browser tools.  This means any changes made to the sour
 
 ## Running the Prod Build
 
-1. Build the prod version of the bundle:
+1. (*Optional*) Build the prod version of the bundle.  The latest-stable prod version should be committed to VCS, so you can skip this part if you want to run latest-stable in a state prior to any changes you may have made:
     ```
     npm run build_prod
     ```
 2. Modify `dist/index.html` to use the prod bundle:
-   ```html
-   Replace <script src='chess.js'></script> 
-   with <script src='chess.min.js'></script>
-   ```
+    1. Find the `<script>` tag at the bottom of the page
+    2. Replace `src='chess.js'` with `src='chess.min.js'`
+
 3. Run the development server:
    ```
    npm start

@@ -2,7 +2,7 @@
     "author": "Dan Adams",
     "description": "Simple chess engine written in ES6.",
     "name": "chess",
-    "license": "MIT",
+    "license": "GPL3",
     "private": true,
     "version": "0.0.1",
     "dependencies": {
