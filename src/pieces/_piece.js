@@ -19,7 +19,7 @@ export class Piece {
     // private
     _cell = null;
     _forward = 1;
-    _possibleMoves = new Array();
+    possibleMoves = new Array();
     
     constructor(side, type) {
         this.side = side;
@@ -120,13 +120,13 @@ export class Piece {
 
     move(cell) {
         // check if I can be moved to this cell...
-        if(cell instanceof Cell && this._possibleMoves.includes(cell.getCoord())) {
+        if(cell instanceof Cell && this.possibleMoves.includes(cell.getCoord())) {
             if(this._cell != null) 
                 this._cell.piece = null;
             
             this._cell = cell;
             this._cell.piece = this;
-            this._possibleMoves = [];
+            this.possibleMoves = [];
 
             return true;
         }

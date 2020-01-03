@@ -13,10 +13,11 @@ import { King } from './pieces/king.js';
  * the pieces and side for a team.
  */
 export class Team {
+    activePiece = null;
     captures = new Array();
     pieces = new Array();
     side = SIDES.white;
-    activePiece = null;
+    kingInCheck = false;
     
     constructor(isWhite) { 
         this.side = isWhite && isWhite >= 1 ? SIDES.white : SIDES.black;
@@ -51,7 +52,7 @@ export class Team {
     clearPossible() {
         this.activePiece = null;
         
-        for(var i = 0; i < this.pieces.length; i++) {
+        for(let i = 0; i < this.pieces.length; i++) {
             let piece = this.pieces[i];
             piece.active = false;
         }
@@ -60,7 +61,7 @@ export class Team {
     getScore() {
         var score = 0;
 
-        for(var i = 0; i < this.captures.length; i++) {
+        for(let i = 0; i < this.captures.length; i++) {
             let capture = this.captures[i];
             score += capture.value;
         }

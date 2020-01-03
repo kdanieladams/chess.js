@@ -12,7 +12,7 @@ export class Queen extends Piece {
         super(side, PIECETYPE.queen);
 
         // init possible starting locations
-        this._possibleMoves = [
+        this.possibleMoves = [
             'd1', 'd8'
         ];
     }
@@ -20,10 +20,10 @@ export class Queen extends Piece {
     canMove(board) {
         if(board instanceof Board) {
             this.active = true;
-            this._possibleMoves = [];
+            this.possibleMoves = [];
 
             // can slide diagonally            
-            this._possibleMoves = this._possibleMoves.concat(
+            this.possibleMoves = this.possibleMoves.concat(
                 this.getDiagMoves(board, true, false),  // forward and left
                 this.getDiagMoves(board, true, true),   // forward and right
                 this.getDiagMoves(board, false, false), // backward and left
@@ -31,14 +31,14 @@ export class Queen extends Piece {
             );
 
             // can slide up-down-left-right until end of board
-            this._possibleMoves = this._possibleMoves.concat(
+            this.possibleMoves = this.possibleMoves.concat(
                 this.getPerpMoves(board, true, true),   // vertical up
                 this.getPerpMoves(board, true, false),  // vertical down
                 this.getPerpMoves(board, false, true),  // horizontal right
                 this.getPerpMoves(board, false, false)  // horizontal left
             );
 
-            return this._possibleMoves;
+            return this.possibleMoves;
         }
         
         console.error("Queen.canMove: Invalid board");

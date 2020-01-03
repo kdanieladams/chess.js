@@ -12,7 +12,7 @@ export class Bishop extends Piece {
         super(side, PIECETYPE.bishop);
 
         // init possible starting locations
-        this._possibleMoves = [
+        this.possibleMoves = [
             'c1', 'f1', 'c8', 'f8'
         ];
     }
@@ -20,17 +20,17 @@ export class Bishop extends Piece {
     canMove(board) {
         if(board instanceof Board) {
             this.active = true;
-            this._possibleMoves = [];
+            this.possibleMoves = [];
 
             // can slide diagonally            
-            this._possibleMoves = this._possibleMoves.concat(
+            this.possibleMoves = this.possibleMoves.concat(
                 this.getDiagMoves(board, true, false),  // forward and left
                 this.getDiagMoves(board, true, true),   // forward and right
                 this.getDiagMoves(board, false, false), // backward and left
                 this.getDiagMoves(board, false, true)   // backward and right
             );
 
-            return this._possibleMoves;
+            return this.possibleMoves;
         }
         
         console.error("Bishop.canMove: Invalid board");

@@ -16,7 +16,7 @@ export class King extends Piece {
         super(side, PIECETYPE.king);
 
         // init possible starting locations
-        this._possibleMoves = this.origCoord;
+        this.possibleMoves = this.origCoord;
     }
 
     canMove(board) {
@@ -25,7 +25,7 @@ export class King extends Piece {
             var rank = this._cell.rank;
             var testMoves = new Array();
 
-            this._possibleMoves = [];
+            this.possibleMoves = [];
 
             // can castle king-side?
             if(!this.hasMoved 
@@ -40,7 +40,7 @@ export class King extends Piece {
                     
                     castleCell.possibleMove = true;
                     castleCell.castleable = true;
-                    this._possibleMoves.push(castleCell.getCoord());
+                    this.possibleMoves.push(castleCell.getCoord());
                 }
             }
 
@@ -58,7 +58,7 @@ export class King extends Piece {
                     
                     castleCell.possibleMove = true;
                     castleCell.castleable = true;
-                    this._possibleMoves.push(castleCell.getCoord());
+                    this.possibleMoves.push(castleCell.getCoord());
                 }
             }
 
@@ -72,26 +72,26 @@ export class King extends Piece {
             testMoves.push("" + Object.keys(FILES)[file - 1] + (rank + 1));
             testMoves.push("" + Object.keys(FILES)[file + 1] + (rank - 1));
             
-            for(var i = 0; i < testMoves.length; i++) {
+            for(let i = 0; i < testMoves.length; i++) {
                 let testMove = testMoves[i];
 
                 if(board.cellInBounds(testMove)) {
                     let cell = board.getCellByCoord(testMove);
                     if(cell.isOccupied()) {
                         if(cell.piece.side != this.side) {
-                            this._possibleMoves.push(testMove);
+                            this.possibleMoves.push(testMove);
                             cell.possibleMove = true;
                         }
 
                         continue;
                     }
                     
-                    this._possibleMoves.push(testMove);
+                    this.possibleMoves.push(testMove);
                     cell.possibleMove = true;
                 }
             }
 
-            return this._possibleMoves;
+            return this.possibleMoves;
         }
 
         console.error("King.canMove: invalid board");
@@ -106,7 +106,7 @@ export class King extends Piece {
                 let rookDest = (cell.file == FILES.c ? 'd' : 'f') + rank;
                 let rook = board.getCellByCoord(rookFile + rank).piece;
 
-                rook._possibleMoves.push(rookDest);
+                rook.possibleMoves.push(rookDest);
                 rook.move(board.getCellByCoord(rookDest));
             }
 

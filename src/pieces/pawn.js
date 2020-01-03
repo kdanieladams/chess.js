@@ -19,7 +19,7 @@ export class Pawn extends Piece {
         super(side, PIECETYPE.pawn);
 
         // init possible starting locations
-        this._possibleMoves = this.origCoord;
+        this.possibleMoves = this.origCoord;
     }
 
     canMove(board) {
@@ -28,13 +28,13 @@ export class Pawn extends Piece {
             var rank = this._cell.rank;
 
             this.active = true;
-            this._possibleMoves = [];
+            this.possibleMoves = [];
 
             // can always move forward 1 sq
             var mv1sq = "" + this._cell.getFile() + (rank + this._forward);
             var cell1 = board.getCellByCoord(mv1sq);
             if(board.cellInBounds(mv1sq) && !cell1.isOccupied()) {
-                this._possibleMoves.push(mv1sq);
+                this.possibleMoves.push(mv1sq);
             }
 
             // on first move, can move 2 sqs
@@ -43,7 +43,7 @@ export class Pawn extends Piece {
             if(!this.hasMoved && board.cellInBounds(mv2sq)
                 && !cell2.isOccupied() && !cell1.isOccupied())
             {
-                this._possibleMoves.push(mv2sq);
+                this.possibleMoves.push(mv2sq);
             }
 
             // can only attack diagonally
@@ -52,7 +52,7 @@ export class Pawn extends Piece {
             if(board.cellInBounds(diagL)) {
                 let cell = board.getCellByCoord(diagL);
                 if(cell.isOccupied() && cell.piece.side == oppSide) {
-                    this._possibleMoves.push(diagL);
+                    this.possibleMoves.push(diagL);
                 }
             }
 
@@ -60,17 +60,17 @@ export class Pawn extends Piece {
             if(board.cellInBounds(diagR)) {
                 let cell = board.getCellByCoord(diagR);
                 if(cell.isOccupied() && cell.piece.side == oppSide) {
-                    this._possibleMoves.push(diagR);
+                    this.possibleMoves.push(diagR);
                 }
             }
 
             // highlight possible moves on the board
-            for(var i = 0; i < this._possibleMoves.length; i++) {
-                let cell = board.getCellByCoord(this._possibleMoves[i]);
+            for(let i = 0; i < this.possibleMoves.length; i++) {
+                let cell = board.getCellByCoord(this.possibleMoves[i]);
                 cell.possibleMove = true;
             }
 
-            return this._possibleMoves;
+            return this.possibleMoves;
         }
      
         console.error("Pawn.canMove: Invalid board");

@@ -30,9 +30,9 @@ export class Board {
         this.ctx = this.canvas.getContext('2d');
         this.pieces_img = pieces_img;
 
-        for(var row = 0; row < NUMRANKS; row++) {
-            for(var col = 0; col < filesArr.length; col++) {
-                var isLight = (row + col) % 2 ? true : false;
+        for(let row = 0; row < NUMRANKS; row++) {
+            for(let col = 0; col < filesArr.length; col++) {
+                let isLight = (row + col) % 2 ? true : false;
                 this.cells.push(new Cell(filesArr[col], row + 1, isLight));
             }
         }

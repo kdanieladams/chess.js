@@ -12,7 +12,7 @@ export class Knight extends Piece {
         super(side, PIECETYPE.knight);
 
         // init possible starting locations
-        this._possibleMoves = [
+        this.possibleMoves = [
             'g1', 'b1', 'g8', 'b8'
         ];
     }
@@ -24,7 +24,7 @@ export class Knight extends Piece {
             var testMoves = new Array();
             
             this.active = true;
-            this._possibleMoves = [];
+            this.possibleMoves = [];
 
             // 2 forward 1 left
             testMoves.push("" + Object.keys(FILES)[file - 1] + (rank + this._forward + this._forward));
@@ -44,18 +44,18 @@ export class Knight extends Piece {
             // 2 right 1 backward
             testMoves.push("" + Object.keys(FILES)[file + 2] + (rank - this._forward));
 
-            for(var i = 0; i < testMoves.length; i++) {
+            for(let i = 0; i < testMoves.length; i++) {
                 let testMove = testMoves[i];
                 if(board.cellInBounds(testMove)) {
                     let cell = board.getCellByCoord(testMove);
                     if(!cell.isOccupied() || cell.piece.side != this.side) {
-                        this._possibleMoves.push(testMove);
+                        this.possibleMoves.push(testMove);
                         cell.possibleMove = true;
                     }
                 }
             }
 
-            return this._possibleMoves;
+            return this.possibleMoves;
         }
 
         console.error("Knight.canMove: Invalid board");

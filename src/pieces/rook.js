@@ -16,23 +16,23 @@ export class Rook extends Piece {
         super(side, PIECETYPE.rook);
 
         // init possible starting locations
-        this._possibleMoves = this.origCoord;
+        this.possibleMoves = this.origCoord;
     }
 
     canMove(board) {
         if(board instanceof Board) {
             this.active = true;
-            this._possibleMoves = [];
+            this.possibleMoves = [];
 
             // can slide up-down-left-right until end of board
-            this._possibleMoves = this._possibleMoves.concat(
+            this.possibleMoves = this.possibleMoves.concat(
                 this.getPerpMoves(board, true, true),   // vertical up
                 this.getPerpMoves(board, true, false),  // vertical down
                 this.getPerpMoves(board, false, true),  // horizontal right
                 this.getPerpMoves(board, false, false)  // horizontal left
             );
             
-            return this._possibleMoves;
+            return this.possibleMoves;
         }
 
         console.error("Rook.canMove: Invalid board");

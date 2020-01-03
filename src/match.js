@@ -1,6 +1,7 @@
 import { FILES, PIECETYPE, SIDES } from './globals.js';
 import { Action } from './action.js';
 import { Board } from './board.js';
+import { ChessAi } from './chessai.js';
 import { Team } from './team.js';
 import { Turn } from './turn.js';
 
@@ -9,6 +10,7 @@ import { Turn } from './turn.js';
  */
 export class Match {
     // placeholders for object instances & callback functions
+    ai = null;
     board = null;
     team1 = null;
     team2 = null;
@@ -50,6 +52,7 @@ export class Match {
                 this.scoreCallback = scoreCallback;
             }
 
+            this.ai = new ChessAi(this.board);
             this.updateStatus("It\'s White\'s turn.");
 
             return true;
@@ -99,9 +102,9 @@ export class Match {
                 activeTeam.activePiece.move(cell);
             }
             
+            this.finishTurn();
             this.clearPossible();
             this.board.draw();
-            this.finishTurn();
         }
         // de-select a piece to move
         else {
@@ -111,8 +114,22 @@ export class Match {
     }
 
     finishTurn() {
-        var team = this.team1.side == this.whosTurn() ? this.team1 : this.team2;
-        this.updateStatus("It\'s " + team.getSide() + "\'s turn.");
+        var nextTeam = this.team1.side == this.whosTurn() ? this.team1 : this.team2;
+        var prevTeam = this.team1.side == this.whosTurn() ? this.team2 : this.team1;
+        var kingCoord = nextTeam.pieces[15].getCoord();
+
+        // check if the opposing king is in-check
+        if(this.ai.detectCheck(kingCoord, prevTeam)) {
+            nextTeam.kingInCheck = true;
+            this.updateStatus(nextTeam.getSide() + "\'s king is in check!");
+        }
+        else {
+            nextTeam.kingInCheck = false;
+        }
+
+        // TODO: check for checkmate
+
+        this.updateStatus("It\'s " + nextTeam.getSide() + "\'s turn.");
     }
 
     getBlackTeam() {
@@ -194,7 +211,7 @@ export class Match {
         var capturedPiece = latestTurn.captures.length > 0 ? latestTurn.captures[latestTurn.captures.length - 1] : null;
 
         // move the piece to it's originating position
-        piece._possibleMoves = [latestAction.startCoord];
+        piece.possibleMoves = [latestAction.startCoord];
         piece.move(this.board.getCellByCoord(latestAction.startCoord));
 
         // remove hasMoved where applicable
@@ -217,7 +234,7 @@ export class Match {
                     && capPieceInst.getCoord() == latestAction.endCoord)
                 {
                     capPieceInst.captured = false;
-                    capPieceInst._possibleMoves = [latestAction.endCoord];
+                    capPieceInst.possibleMoves = [latestAction.endCoord];
                     capPieceInst.move(this.board.getCellByCoord(latestAction.endCoord));
                     break;
                 }
