@@ -1,2 +1,4 @@
 /node_modules
 /dist/chess.js
+*.md
+!readme.md
