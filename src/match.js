@@ -101,7 +101,8 @@ export class Match {
             else {
                 activeTeam.activePiece.move(cell);
             }
-            
+
+            this.halfTurns++;
             this.finishTurn();
             this.clearPossible();
             this.board.draw();
@@ -116,19 +117,9 @@ export class Match {
     finishTurn() {
         var nextTeam = this.team1.side == this.whosTurn() ? this.team1 : this.team2;
         var prevTeam = this.team1.side == this.whosTurn() ? this.team2 : this.team1;
-        var kingCoord = nextTeam.pieces[15].getCoord();
 
-        // check if the opposing king is in-check
-        if(this.ai.detectCheck(kingCoord, prevTeam)) {
-            nextTeam.kingInCheck = true;
-            this.updateStatus(nextTeam.getSide() + "\'s king is in check!");
-        }
-        else {
-            nextTeam.kingInCheck = false;
-        }
-
-        // TODO: check for checkmate
-
+        this.isTeamInCheck(nextTeam, prevTeam);
+        this.isTeamInCheck(prevTeam, nextTeam);
         this.updateStatus("It\'s " + nextTeam.getSide() + "\'s turn.");
     }
 
@@ -138,6 +129,24 @@ export class Match {
 
     getWhiteTeam() {
         return this.team1.side == SIDES.white ? this.team1 : this.team2;
+    }
+
+    isTeamInCheck(defTeam, offTeam) {
+        var kingCoord = defTeam.pieces[15].getCoord();
+
+        if(this.ai.detectCheck(kingCoord, offTeam)) {
+            defTeam.kingInCheck = true;
+            this.updateStatus(defTeam.getSide() + "\'s king is in check!");
+            // TODO: check for checkmate
+            
+            return true;
+        }
+        else if(defTeam.kingInCheck == true) {
+            defTeam.kingInCheck = false;
+            this.updateStatus(defTeam.getSide() + "\'s king is no longer in check.");
+        }
+
+        return false;
     }
 
     setupPieces(team) {
@@ -200,8 +209,6 @@ export class Match {
             this.updateStatus(msg);
             this.updateScore();
         }
-
-        this.halfTurns++;
     }
 
     undoMove() {

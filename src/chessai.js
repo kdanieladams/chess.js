@@ -32,9 +32,11 @@ export class ChessAi {
 
         for(let i = 0; i < assaultTeam.pieces.length; i ++){
             let piece = assaultTeam.pieces[i];
-            piece.canMove(this.board);
-            if(piece.possibleMoves.includes(kingCoord)) {
-                return true;
+            if(!piece.captured) {
+                piece.canMove(this.board);
+                if(piece.possibleMoves.includes(kingCoord)) {
+                    return true;
+                }
             }
         }
 
