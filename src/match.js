@@ -1,6 +1,6 @@
 import { FILES, PIECETYPE, SIDES } from './globals.js';
-import { Action } from './action.js';
 import { Board } from './board.js';
+import { Cell } from './cell.js';
 import { ChessAi } from './chessai.js';
 import { Team } from './team.js';
 import { Turn } from './turn.js';
@@ -20,9 +20,6 @@ export class Match {
     // internal collections
     turns = new Array();
     msgs = new Array();
-
-    // half turns for either white or black
-    halfTurns = 0;
 
     // half turns made in search tree ??? idfk, GameBoard.ply in tut
     // aiTurns = 0;   
@@ -102,7 +99,6 @@ export class Match {
                 activeTeam.activePiece.move(cell);
             }
 
-            this.halfTurns++;
             this.finishTurn();
             this.clearPossible();
             this.board.draw();
@@ -181,16 +177,13 @@ export class Match {
     }
 
     startTurn(piece, cell) {
-        var action = new Action(piece, cell.getCoord());
-        var activeTurn = this.turns[this.turns.length - 1];
-        
-        if(this.whosTurn() == SIDES.white) {
-            this.turns.push(new Turn(action));
-            activeTurn = this.turns[this.turns.length - 1];
+        if(!(cell instanceof Cell)) {
+            console.error("Match.startTurn: invalid moveTo cell.");
+            return false;
         }
-        else {
-            activeTurn.blackAction = action;
-        }
+
+        var activeTurn = new Turn(piece, cell.getCoord());
+        this.turns.push(activeTurn);
 
         // handle captures
         if(cell.isOccupied()) {
@@ -205,7 +198,7 @@ export class Match {
             pieceCopy = Object.assign({}, cell.piece);
             activeTurn.captures.push(pieceCopy);
             activeTeam.captures.push(pieceCopy);
-
+    
             this.updateStatus(msg);
             this.updateScore();
         }
@@ -213,17 +206,16 @@ export class Match {
 
     undoMove() {
         var latestTurn = this.turns[this.turns.length - 1];
-        var latestAction = latestTurn.blackAction != null ? latestTurn.blackAction : latestTurn.whiteAction;
-        var piece = latestAction.movedPiece;
+        var piece = latestTurn.movedPiece;
         var capturedPiece = latestTurn.captures.length > 0 ? latestTurn.captures[latestTurn.captures.length - 1] : null;
 
         // move the piece to it's originating position
-        piece.possibleMoves = [latestAction.startCoord];
-        piece.move(this.board.getCellByCoord(latestAction.startCoord));
+        piece.possibleMoves = [latestTurn.startCoord];
+        piece.move(this.board.getCellByCoord(latestTurn.startCoord));
 
         // remove hasMoved where applicable
         if(piece.hasMoved != null && piece.origCoord != null 
-            && piece.origCoord.includes(latestAction.startCoord)) 
+            && piece.origCoord.includes(latestTurn.startCoord)) 
         {
             piece.hasMoved = false;
         }
@@ -238,11 +230,11 @@ export class Match {
 
                 if(capPieceInst.captured 
                     && capPieceInst.type == capturedPiece.type
-                    && capPieceInst.getCoord() == latestAction.endCoord)
+                    && capPieceInst.getCoord() == latestTurn.endCoord)
                 {
                     capPieceInst.captured = false;
-                    capPieceInst.possibleMoves = [latestAction.endCoord];
-                    capPieceInst.move(this.board.getCellByCoord(latestAction.endCoord));
+                    capPieceInst.possibleMoves = [latestTurn.endCoord];
+                    capPieceInst.move(this.board.getCellByCoord(latestTurn.endCoord));
                     break;
                 }
             }
@@ -254,12 +246,8 @@ export class Match {
         }
 
         // remove the action from the log
-        if(latestAction.side == SIDES.black)
-            latestTurn.blackAction = null;
-        else
-            this.turns.pop();
+        this.turns.pop();
 
-        this.halfTurns--;
         this.msgs.pop(); // "It's White's turn."
         this.msgs.pop(); // "Black moves Pawn(A7) to A5"
         this.updateStatus();
@@ -299,6 +287,6 @@ export class Match {
     }
 
     whosTurn() {
-        return this.halfTurns % 2 ? SIDES.black : SIDES.white;
+        return this.turns.length % 2 ? SIDES.black : SIDES.white;
     }
 }

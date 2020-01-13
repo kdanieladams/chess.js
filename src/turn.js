@@ -1,21 +1,26 @@
 import { SIDES } from './globals.js';
+import { Piece } from './pieces/_piece.js';
 
 /**
  * Turn
  * 
- * Turn is assembled in parts as halfTurns (or team Actions) occur. 
+ * Half-turn or action of one team (white OR black).
  */
 export class Turn {
-    whiteAction = null;
-    blackAction = null;
     captures = new Array();
+    movedPiece = null;
+    side = SIDES.white;
+    startCoord = '';
+    endCoord = '';
 
-    constructor(whiteAction) {
-        if(whiteAction.side != SIDES.white) {
-            console.error("Turn.constructor: invalid whiteAction");
-            return;
+    constructor(piece, moveTo) {
+        if(piece instanceof Piece
+            && (typeof(moveTo) == 'string' && moveTo.length == 2))
+        {
+            this.movedPiece = piece;
+            this.side = this.movedPiece.side;
+            this.startCoord = this.movedPiece.getCoord();
+            this.endCoord = moveTo;
         }
-
-        this.whiteAction = whiteAction;
     }
 }
