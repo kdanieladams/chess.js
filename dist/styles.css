@@ -69,6 +69,19 @@ p {
     float: left;
 }
 
+.colLeft50, .colRight50 {
+    width: 50%;
+}
+.colLeft50 h4, .colRight50 h4 {
+    margin-bottom: 5px;
+}
+.colLeft50 {
+    float: left;
+}
+.colRight50 {
+    float: right;
+}
+
 .rank {
     height: 80px;
     line-height: 80px;
@@ -100,6 +113,18 @@ p {
 /**
  * IDs
  */
+#black_captures, #white_captures {
+    margin-left: 20px;
+    max-width: 311px;
+    min-height: 80px;
+}
+#black_captures {
+    background-color: #333;
+}
+#white_captures {
+    background-color: #919191;
+}
+
 #chess_board {
     margin: 10px 0 0 0;
     border: solid 1px #999;

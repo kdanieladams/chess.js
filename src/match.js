@@ -14,6 +14,7 @@ export class Match {
     board = null;
     team1 = null;
     team2 = null;
+    captureCallback = null;
     scoreCallback = null;
     statusCallback = null;
 
@@ -27,7 +28,7 @@ export class Match {
     // draw if in 50 turns, no pawn has moved and no piece has been captured
     fiftyMove = 0;
 
-    constructor(board, team1, team2, statusCallback, scoreCallback) {
+    constructor(board, team1, team2, statusCallback, scoreCallback, captureCallback) {
         // verify type of each param
         if(board instanceof Board 
             && team1 instanceof Team 
@@ -41,13 +42,14 @@ export class Match {
             this.setupPieces(this.team1);
             this.setupPieces(this.team2);
 
-            if(typeof(statusCallback) == 'function') {
+            if(typeof(statusCallback) == 'function')
                 this.statusCallback = statusCallback;
-            }
             
-            if(typeof(scoreCallback) == 'function') {
+            if(typeof(scoreCallback) == 'function')
                 this.scoreCallback = scoreCallback;
-            }
+
+            if(typeof(captureCallback) == 'function')
+                this.captureCallback = captureCallback;
 
             this.ai = new ChessAi(this.board);
             this.updateStatus("It\'s White\'s turn.");
@@ -70,12 +72,10 @@ export class Match {
         var activeTeam = this.team1.side == this.whosTurn() ? this.team1 : this.team2;
 
         // select a piece to move
-        if(activeTeam.activePiece == null 
-            && cell.isOccupied() 
-            && cell.piece.side == activeTeam.side) 
-        {
+        if(cell.isOccupied() && cell.piece.side == activeTeam.side) {
             let piece = cell.piece;
 
+            this.clearPossible();
             activeTeam.activePiece = piece;
             piece.canMove(this.board);
             this.board.draw();
@@ -153,26 +153,25 @@ export class Match {
         
         for(let i = 0; i < team.pieces.length; i++) {
             let piece = team.pieces[i];
+            let coord = '';
 
             // pawns
             if(i < filesArr.length && piece.type == PIECETYPE.pawn)
-                piece.move(board.getCellByCoord(filesArr[i] + pawnRank));
-
+                coord = filesArr[i] + pawnRank;
             // rooks
-            else if(i == 8) piece.move(board.getCellByCoord("a" + rank));
-            else if(i == 9) piece.move(board.getCellByCoord("h" + rank));
-
+            else if(i == 8) coord = "a" + rank;
+            else if(i == 9) coord = "h" + rank;
             // knights
-            else if(i == 10) piece.move(board.getCellByCoord("b" + rank));
-            else if(i == 11) piece.move(board.getCellByCoord("g" + rank));
-
+            else if(i == 10) coord = "b" + rank;
+            else if(i == 11) coord = "g" + rank;
             // bishops
-            else if(i == 12) piece.move(board.getCellByCoord("c" + rank));
-            else if(i == 13) piece.move(board.getCellByCoord("f" + rank));
-
+            else if(i == 12) coord = "c" + rank;
+            else if(i == 13) coord = "f" + rank;
             // royalty
-            else if(i == 14) piece.move(board.getCellByCoord("d" + rank));
-            else if(i == 15) piece.move(board.getCellByCoord("e" + rank));
+            else if(i == 14) coord = "d" + rank;
+            else if(i == 15) coord = "e" + rank;
+
+            piece.move(board.getCellByCoord(coord));
         }
     }
 
@@ -183,7 +182,6 @@ export class Match {
         }
 
         var activeTurn = new Turn(piece, cell.getCoord());
-        this.turns.push(activeTurn);
 
         // handle captures
         if(cell.isOccupied()) {
@@ -199,9 +197,12 @@ export class Match {
             activeTurn.captures.push(pieceCopy);
             activeTeam.captures.push(pieceCopy);
     
+            this.updateCaptures(activeTeam);
             this.updateStatus(msg);
             this.updateScore();
         }
+
+        this.turns.push(activeTurn);
     }
 
     undoMove() {
@@ -241,6 +242,7 @@ export class Match {
 
             // remove captured pieces from Team.captured
             offTeam.captures.pop();
+            this.updateCaptures(offTeam);
             this.updateScore();
             this.msgs.pop(); // "White captures Black Pawn (E7)."
         }
@@ -251,9 +253,21 @@ export class Match {
         this.msgs.pop(); // "It's White's turn."
         this.msgs.pop(); // "Black moves Pawn(A7) to A5"
         this.updateStatus();
+        
 
         // re-draw the board
         this.board.draw();
+    }
+
+    updateCaptures(team) {
+        if(!(team instanceof Team)) {
+            console.error('Match.updateCaptures: requires instance of Team.');
+            return;
+        }
+
+        if(this.captureCallback) {
+            this.captureCallback(team);
+        }
     }
 
     updateStatus(msg) {

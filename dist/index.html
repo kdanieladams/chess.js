@@ -6,35 +6,43 @@
         <link rel="icon" href="./favicon.ico" type="image/x-icon" />
         <link rel="stylesheet" type="text/css" href="./styles.css" />
     </head>
-    <body>
-        <h1 class="center">Chess.js</h1>
-        <p class="center">Simple chess engine written in ES6. For now, there is 
+    <body class="center">
+        <h1>Chess.js</h1>
+        <p>Simple chess engine written in ES6. For now, there is 
             no AI.  Both sides are human-controlled.</p>
-        <div class="center">
-            <div class="boardContainer">
-                <div class="row">
-                    <div class="colLeft"><h4>Scoring</h4></div>
-                    <div class="colRight"><h4>Status</h4></div>
+        <div class="boardContainer">
+            <div class="row">
+                <div class="colLeft"><h4>Scoring</h4></div>
+                <div class="colRight"><h4>Status</h4></div>
+            </div>
+            <div class="row">
+                <div class="colLeft">
+                    <div id="score_box"></div>
+                    <button class="undoBtn" id="undo_btn">
+                        <span class="symbol">&#8630;</span>
+                        Undo Move
+                    </button>
                 </div>
-                <div class="row">
-                    <div class="colLeft">
-                        <div id="score_box"></div>
-                        <button class="undoBtn" id="undo_btn">
-                            <span class="symbol">&#8630;</span>
-                            Undo Move
-                        </button>
-                    </div>
-                    <div class="colRight">
-                        <div id="status_box"></div>
-                    </div>
+                <div class="colRight">
+                    <div id="status_box"></div>
                 </div>
-                <div id="rank_col"></div>
-                <canvas id="chess_board" width="640" height="640"></canvas>
-                <div id="file_row"></div>
+            </div>
+            <div id="rank_col"></div>
+            <canvas id="chess_board" width="640" height="640"></canvas>
+            <div id="file_row"></div>
+            <div class="row">
+                <div class="colLeft50">
+                    <h4>White Captures</h4>
+                    <div id="white_captures"></div>
+                </div>
+                <div class="colRight50">
+                    <h4>Black Captures</h4>
+                    <div id="black_captures"></div>
+                </div>
             </div>
         </div>
         <img src="pieces.png" id="pieces_img" />
         <!-- <script src="chess.min.js"></script> -->
         <script src="chess.js"></script>
-    </body>
+    </body class="center">
 </html>

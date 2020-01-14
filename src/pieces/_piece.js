@@ -28,12 +28,43 @@ export class Piece {
         this._forward = this.side == SIDES.white ? 1 : -1; // -1 = down, 1 = up
     }
 
+    _iterateMoves(board, coord, incFile, incRank) {
+        var moves = new Array();
+
+        while(board.cellInBounds(coord)) {
+            let file = FILES[coord[0]];
+            let rank = parseInt(coord[1]);
+            let nextFile = file + incFile;
+            let nextRank = rank + incRank;
+
+            if(coord != this.getCoord())  {
+                let cell = board.getCellByCoord(coord);
+                
+                if(cell.isOccupied()) {
+                    if(cell.piece.side != this.side) {
+                        moves.push(coord);
+                        cell.possibleMove = true;
+                    }
+                    
+                    break;
+                }
+                
+                moves.push(coord);
+                cell.possibleMove = true;
+            }
+
+            coord = "" + Object.keys(FILES)[nextFile] + (nextRank);
+        }
+
+        return moves;
+    }
+
     canMove() {
         console.error("Piece.canMove: canMove has not been implemented!");
     }
 
     draw(img, ctx, xPos, yPos, cellWidth) {
-        var clipX = (img.naturalWidth - PIECESPRITEWIDTH) - (this.type * PIECESPRITEWIDTH) + PIECESPRITEWIDTH,
+        var clipX = img.naturalWidth - (this.type * PIECESPRITEWIDTH),
             clipY = this.side == SIDES.white ? 0 : PIECESPRITEWIDTH,
             clipWidth = PIECESPRITEWIDTH,
             clipHeight = PIECESPRITEWIDTH;
@@ -58,7 +89,7 @@ export class Piece {
             var incFile = right ? 1 : -1;
             var incRank = (forward ? 1 : -1) * this._forward;
     
-            return this.iterateMoves(board, coord, incFile, incRank);
+            return this._iterateMoves(board, coord, incFile, incRank);
         }
         
         console.error("Piece.getDiagMoves: Invalid board");
@@ -74,7 +105,7 @@ export class Piece {
             var incFile = !vertical ? (positive ? 1 : -1) : 0;
             var incRank = vertical ? (positive ? 1 : -1) * this._forward : 0;
 
-            return this.iterateMoves(board, coord, incFile, incRank);
+            return this._iterateMoves(board, coord, incFile, incRank);
         }
 
         console.error("Piece.getPerpMoves: Invalid board");
@@ -87,35 +118,6 @@ export class Piece {
 
     getSide() {
         return CAPITALIZE(Object.keys(SIDES)[this.side]);
-    }
-
-    iterateMoves(board, coord, incFile, incRank) {
-        var moves = new Array();
-
-        while(board.cellInBounds(coord)) {
-            let file = FILES[coord[0]];
-            let rank = parseInt(coord[1]);
-
-            if(coord != this.getCoord())  {
-                let cell = board.getCellByCoord(coord);
-                
-                if(cell.isOccupied()) {
-                    if(cell.piece.side != this.side) {
-                        moves.push(coord);
-                        cell.possibleMove = true;
-                    }
-                    
-                    break;
-                }
-                
-                moves.push(coord);
-                cell.possibleMove = true;
-            }
-
-            coord = "" + Object.keys(FILES)[file + incFile] + (rank + incRank);
-        }
-
-        return moves;
     }
 
     move(cell) {

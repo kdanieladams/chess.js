@@ -1,4 +1,4 @@
-import { FILES, NUMFILES, NUMRANKS, SIDES } from './globals.js';
+import { FILES, NUMFILES, NUMRANKS, PIECESPRITEWIDTH, SIDES } from './globals.js';
 import { Board } from './board.js';
 import { Match } from './match.js';
 import { Team } from './team.js';
@@ -9,8 +9,8 @@ import { Team } from './team.js';
  * Main thread for the game.
  */
 
-// Runtime global placeholder for the match instance.
 var match = null;
+var piecesImg = document.getElementById('pieces_img');
 
 /**
  * Global Functions
@@ -36,6 +36,30 @@ function fillBoardAxes() {
     }
 }
 
+function updateCaptures(team) {
+    var capElmId = (team.side == SIDES.white ? 'white_captures' : 'black_captures'),
+        capElm = document.getElementById(capElmId);
+
+    // clear out the list first
+    capElm.innerHTML = "";
+
+    for(let capture of team.captures) {
+        let displayElm = document.createElement('div'),
+            spriteWidth = PIECESPRITEWIDTH * 0.8,
+            clipX = -1 * ((piecesImg.naturalWidth * 0.8) - (capture.type * spriteWidth)),
+            clipY = -1 * (capture.side == SIDES.white ? 0 : spriteWidth);
+        
+        displayElm.style.width = `${spriteWidth}px`;
+        displayElm.style.height = `${spriteWidth}px`;
+        displayElm.style.backgroundImage = `url(${piecesImg.src})`;
+        displayElm.style.backgroundSize = `${piecesImg.naturalWidth * 0.8}px`;
+        displayElm.style.backgroundPosition = `${clipX}px ${clipY}px`;
+        displayElm.style.display = 'inline-block';
+
+        capElm.appendChild(displayElm);
+    }
+}
+
 function updateScore() {
     var scoreBox = document.getElementById('score_box');
     var whiteScore = match.team1.side == SIDES.white ? match.team1.getScore() : match.team2.getScore();
@@ -57,13 +81,13 @@ function updateStatus(msg) {
  */
 function init() {
     var canvas = document.getElementById('chess_board');
-    var piecesImg = document.getElementById('pieces_img');
+    
     var undoBtn = document.getElementById('undo_btn');
 
     match = new Match(new Board(canvas, piecesImg), 
         new Team(SIDES.white), 
         new Team(SIDES.black),
-        updateStatus, updateScore);
+        updateStatus, updateScore, updateCaptures);
 
     match.board.draw();
 
