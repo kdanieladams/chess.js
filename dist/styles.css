@@ -38,6 +38,7 @@ p {
 .boardContainer {
     display: inline-block;
     margin: 10px;
+    width: 675px;
 }
 
 .center {
@@ -126,6 +127,7 @@ p {
 }
 
 #chess_board {
+    display: inline;
     margin: 10px 0 0 0;
     border: solid 1px #999;
 }
@@ -142,12 +144,6 @@ p {
     float: left;
     margin: 11px 0 0 0;
     width: 20px;
-}
-
-#rank_col::after {
-    content: "";
-    clear: both;
-    display: table;
 }
 
 #score_box {

@@ -9,6 +9,7 @@ import { Team } from './team.js';
  * Main thread for the game.
  */
 
+var canvas = document.getElementById('chess_board');
 var match = null;
 var piecesImg = document.getElementById('pieces_img');
 
@@ -38,21 +39,22 @@ function fillBoardAxes() {
 
 function updateCaptures(team) {
     var capElmId = (team.side == SIDES.white ? 'white_captures' : 'black_captures'),
-        capElm = document.getElementById(capElmId);
+        capElm = document.getElementById(capElmId),
+        redux = (canvas.width / NUMFILES) / PIECESPRITEWIDTH,
+        spriteWidth = PIECESPRITEWIDTH * redux;
 
     // clear out the list first
     capElm.innerHTML = "";
 
     for(let capture of team.captures) {
         let displayElm = document.createElement('div'),
-            spriteWidth = PIECESPRITEWIDTH * 0.8,
-            clipX = -1 * ((piecesImg.naturalWidth * 0.8) - (capture.type * spriteWidth)),
+            clipX = -1 * ((piecesImg.naturalWidth * redux) - (capture.type * spriteWidth)),
             clipY = -1 * (capture.side == SIDES.white ? 0 : spriteWidth);
         
         displayElm.style.width = `${spriteWidth}px`;
         displayElm.style.height = `${spriteWidth}px`;
         displayElm.style.backgroundImage = `url(${piecesImg.src})`;
-        displayElm.style.backgroundSize = `${piecesImg.naturalWidth * 0.8}px`;
+        displayElm.style.backgroundSize = `${piecesImg.naturalWidth * redux}px`;
         displayElm.style.backgroundPosition = `${clipX}px ${clipY}px`;
         displayElm.style.display = 'inline-block';
 
@@ -80,8 +82,6 @@ function updateStatus(msg) {
  * Initialization
  */
 function init() {
-    var canvas = document.getElementById('chess_board');
-    
     var undoBtn = document.getElementById('undo_btn');
 
     match = new Match(new Board(canvas, piecesImg), 
