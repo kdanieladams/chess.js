@@ -40,11 +40,3 @@ Generally, I debug using browser tools.  This means any changes made to the sour
    npm start
    ```
 4. Visit the appropriate URL in a browser (defaults to http://localhost:3000, configured in `server.js`).
-
-## Modification and Adaptation
-This library makes some assumptions (surprise, it's not a perfect model).  If you want to modify it, you'll need to understand a number of these assumptions:
-1. The board is square.  This doesn't mean the board is a fixed size (8x8 for chess).  However, it *must* be square, otherwise the Board constructor will not fill the entire space.  If you want a rectangular board, the Board `constructor()` and `draw()` methods will need work.
-   1. If you change the Board size, the Match setup-phase will need work.  It places 32 pieces on a Board that is 8x8 according to a traditional chess starting layout.  This will include editing the pieces - each piece specifies all possible starting locations for that piece according to the same layout.
-   2. It is possible to use this library to build a different game with a different *square* board...or several *square* boards. Such an endeavor would require significant editing (or replacement) of the Match class.
-2. The sprites are square.  Sprite size is configurable in the `globals.js` file, but there's only one dimension for them, because it's assumed that they're square.  Drawing pieces is handled in the abstract `_piece` class. 
-3. The Match class is designed for chess, quite specifically as we know it in 2 dimensional terms.  But this library could handle 3d chess, with modifications to Match, Board, _piece.canMove() and match resolution goals (checkmate).  
